@@ -20,17 +20,20 @@ endfunction " }}}1
 
 " Convert a list to a path.
 function! pathogen#join(...) abort " {{{1
-  let i = 0
+  if type(a:1) == type(1) && a:1
+    let i = 1
+    let space = ' '
+  else
+    let i = 0
+    let space = ''
+  endif
   let path = ""
   while i < a:0
     if type(a:000[i]) == type([])
       let list = a:000[i]
       let j = 0
       while j < len(list)
-        let escaped = substitute(list[j],'[\\, ]','\\&','g')
-        if exists("+shellslash") && !&shellslash
-          let escaped = substitute(escaped,'^\(\w:\\\)\\','\1','')
-        endif
+        let escaped = substitute(list[j],'[,'.space.']\|\\[\,'.space.']\@=','\\&','g')
         let path .= ',' . escaped
         let j += 1
       endwhile
@@ -40,6 +43,11 @@ function! pathogen#join(...) abort " {{{1
     let i += 1
   endwhile
   return substitute(path,'^,','','')
+endfunction " }}}1
+
+" Convert a list to a path with escaped spaces for 'path', 'tag', etc.
+function! pathogen#legacyjoin(...) abort " {{{1
+  return call('pathogen#join',[1] + a:000)
 endfunction " }}}1
 
 " \ on Windows unless shellslash is set, / everywhere else
