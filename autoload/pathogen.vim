@@ -50,18 +50,18 @@ function! pathogen#legacyjoin(...) abort " {{{1
   return call('pathogen#join',[1] + a:000)
 endfunction " }}}1
 
-" \ on Windows unless shellslash is set, / everywhere else
+" \ on Windows unless shellslash is set, / everywhere else.
 function! pathogen#separator() abort " {{{1
   return !exists("+shellslash") || &shellslash ? '/' : '\'
 endfunction " }}}1
 
-" Convenience wrapper around glob() which returns a list
+" Convenience wrapper around glob() which returns a list.
 function! pathogen#glob(pattern) abort " {{{1
   let files = split(glob(a:pattern),"\n")
   return map(files,'substitute(v:val,"[".pathogen#separator()."/]$","","")')
 endfunction "}}}1
 
-" Like pathogen#glob(), only limit the results to directories
+" Like pathogen#glob(), only limit the results to directories.
 function! pathogen#glob_directories(pattern) abort " {{{1
   return filter(pathogen#glob(a:pattern),'isdirectory(v:val)')
 endfunction "}}}1
