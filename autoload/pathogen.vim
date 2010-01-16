@@ -50,6 +50,21 @@ function! pathogen#legacyjoin(...) abort " {{{1
   return call('pathogen#join',[1] + a:000)
 endfunction " }}}1
 
+" Remove duplicates from a list.
+function! pathogen#uniq(list) abort " {{{1
+  let i = 0
+  let seen = {}
+  while i < len(a:list)
+    if has_key(seen,a:list[i])
+      call remove(a:list,i)
+    else
+      let seen[a:list[i]] = 1
+      let i += 1
+    endif
+  endwhile
+  return a:list
+endfunction " }}}1
+
 " \ on Windows unless shellslash is set, / everywhere else.
 function! pathogen#separator() abort " {{{1
   return !exists("+shellslash") || &shellslash ? '/' : '\'
@@ -75,7 +90,7 @@ function! pathogen#runtime_prepend_subdirectories(path) " {{{1
   let rtp = pathogen#split(&rtp)
   let path = expand(a:path)
   call filter(rtp,'v:val[0:strlen(path)-1] !=# path')
-  let &rtp = pathogen#join(before + rtp + after)
+  let &rtp = pathogen#join(pathogen#uniq(before + rtp + after))
   return &rtp
 endfunction " }}}1
 
@@ -98,7 +113,7 @@ function! pathogen#runtime_append_all_bundles(...) " {{{1
       let list +=  [dir] + pathogen#glob_directories(dir.sep.name.sep.'*[^~]')
     endif
   endfor
-  let &rtp = pathogen#join(list)
+  let &rtp = pathogen#join(pathogen#uniq(list))
   return 1
 endfunction
 
