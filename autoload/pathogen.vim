@@ -123,7 +123,9 @@ let s:done_bundles = ''
 " Invoke :helptags on all non-$VIM doc directories in runtimepath.
 function! pathogen#helptags() " {{{1
   for dir in pathogen#split(&rtp)
-    if dir[0 : strlen($VIM)-1] !=# $VIM && isdirectory(dir.'/doc') && (!filereadable(dir.'/doc/tags') || filewritable(dir.'/doc/tags'))
+    "the first part of this IF was not working on windows so changed it to
+    "see if we're in a bundle dir which does work.
+    if matchstr(dir,'bundle') == 'bundle' && isdirectory(dir.'/doc') && (!filereadable(dir.'/doc/tags') || filewritable(dir.'/doc/tags'))
       helptags `=dir.'/doc'`
     endif
   endfor
