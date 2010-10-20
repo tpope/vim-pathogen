@@ -99,6 +99,8 @@ endfunction " }}}1
 " after the original directory.  If no argument is given, 'bundle' is used.
 " Repeated calls with the same arguments are ignored.
 function! pathogen#runtime_append_all_bundles(...) " {{{1
+  filetype off
+
   let sep = pathogen#separator()
   let name = a:0 ? a:1 : 'bundle'
   if "\n".s:done_bundles =~# "\\M\n".name."\n"
