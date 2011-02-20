@@ -91,6 +91,12 @@ function! pathogen#is_disabled(path) " {{{1
   return index(g:pathogen_disabled, strpart(a:path, strridx(a:path, sep)+1)) != -1
 endfunction "}}}1
 
+function! pathogen#is_disabled_after(path) " {{{1
+  "let path = substitute(a:path, ",\\=[^,]*$", "", "")
+  let path = substitute(a:path, '/after', '', '')
+  return pathogen#is_disabled(path)
+endfunction "}}}1
+
 " Prepend all subdirectories of path to the rtp, and append all 'after'
 " directories in those subdirectories.
 function! pathogen#runtime_prepend_subdirectories(path) " {{{1
@@ -118,7 +124,7 @@ function! pathogen#runtime_append_all_bundles(...) " {{{1
   let list = []
   for dir in pathogen#split(&rtp)
     if dir =~# '\<after$'
-      let list +=  filter(pathogen#glob_directories(substitute(dir,'after$',name,'').sep.'*[^~]'.sep.'after'), '!pathogen#is_disabled(v:val)') + [dir]
+      let list +=  filter(pathogen#glob_directories(substitute(dir,'after$',name,'').sep.'*[^~]'.sep.'after'), '!pathogen#is_disabled_after(v:val)') + [dir]
     else
       let list +=  [dir] + filter(pathogen#glob_directories(dir.sep.name.sep.'*[^~]'), '!pathogen#is_disabled(v:val)')
     endif
