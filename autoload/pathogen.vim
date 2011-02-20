@@ -96,7 +96,7 @@ endfunction "}}}1
 function! pathogen#runtime_prepend_subdirectories(path) " {{{1
   let sep    = pathogen#separator()
   let before = filter(pathogen#glob_directories(a:path.sep."*[^~]"), '!pathogen#is_disabled(v:val)')
-  let after  = filter(pathogen#glob_directories(a:path.sep."*[^~]".sep."after"), '!pathogen#is_disabled(v:val)')
+  let after  = filter(pathogen#glob_directories(a:path.sep."*[^~]".sep."after"), '!pathogen#is_disabled(v:val[0:-7])')
   let rtp = pathogen#split(&rtp)
   let path = expand(a:path)
   call filter(rtp,'v:val[0:strlen(path)-1] !=# path')
