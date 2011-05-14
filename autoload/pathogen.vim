@@ -4,12 +4,26 @@
 
 " Install in ~/.vim/autoload (or ~\vimfiles\autoload).
 "
+" For management of individually installed plugins in ~/.vim/bundle
+" (or $HOME/vimfiles/bundle), adding 'call pathogen#infect()' to your
+" .vimrc prior to 'fileype plugin indent on' is the only other setup necessary.
+"
 " API is documented below.
 
 if exists("g:loaded_pathogen") || &cp
   finish
 endif
 let g:loaded_pathogen = 1
+
+" Point of entry for basic default usage.
+function! pathogen#infect() abort " {{{1
+  let filetype_was_on = exists('g:did_load_filetypes')
+  filetype off
+  call pathogen#runtime_append_all_bundles()
+  if filetype_was_on
+    filetype on
+  endif
+endfunction " }}}1
 
 " Split a path into a list.
 function! pathogen#split(path) abort " {{{1
