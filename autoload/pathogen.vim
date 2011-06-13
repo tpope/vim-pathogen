@@ -16,8 +16,9 @@ endif
 let g:loaded_pathogen = 1
 
 " Point of entry for basic default usage.
-function! pathogen#infect() abort " {{{1
-  call pathogen#runtime_append_all_bundles()
+function! pathogen#infect(...) abort " {{{1
+  let source_path = a:0 ? a:1 : 'bundle'
+  call pathogen#runtime_append_all_bundles(source_path)
   call pathogen#cycle_filetype()
 endfunction " }}}1
 
