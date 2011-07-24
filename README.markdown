@@ -5,12 +5,22 @@ Manage your `'runtimepath'` with ease.  In practical terms, pathogen.vim
 makes it super easy to install plugins and runtime files in their own
 private directories.
 
+Installation
+------------
+
+Install to `~/.vim/autoload/pathogen.vim`.  Or copy and paste:
+
+    mkdir -p ~/.vim/autoload ~/.vim/bundle
+    curl https://raw.github.com/tpope/vim-pathogen/master/autoload/pathogen.vim\
+      > ~/.vim/autoload/pathogen.vim
+
+By the way, if you're using Windows, change all occurances of `~/.vim`
+to `~\vimfiles.
+
 Usage
 -----
 
-Install to `~/.vim/autoload/pathogen.vim`
-(`~\vimfiles\autoload\pathogen.vim` on Windows, and that pattern applies
-to the paths below, too), and add this to your vimrc:
+Add this to your vimrc:
 
     call pathogen#infect()
 
