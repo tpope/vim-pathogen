@@ -14,7 +14,7 @@ Install to `~/.vim/autoload/pathogen.vim`.  Or copy and paste:
     curl https://raw.github.com/tpope/vim-pathogen/master/autoload/pathogen.vim\
       > ~/.vim/autoload/pathogen.vim
 
-By the way, if you're using Windows, change all occurances of `~/.vim`
+By the way, if you're using Windows, change all occurrences of `~/.vim`
 to `~\vimfiles.
 
 Usage
