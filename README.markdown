@@ -15,7 +15,7 @@ Install to `~/.vim/autoload/pathogen.vim`.  Or copy and paste:
       > ~/.vim/autoload/pathogen.vim
 
 By the way, if you're using Windows, change all occurrences of `~/.vim`
-to `~\vimfiles.
+to `~\vimfiles`.
 
 Usage
 -----
