@@ -50,8 +50,9 @@ extra line to your vimrc:
     source ~/.vim/bundle/vim-pathogen/autoload/pathogen.vim
 
 Finally, pathogen.vim has a rich API that can manipulate `'runtimepath'`
-in ways most people will never need to do.  If you're one of those edge
-cases, look at the source.  It's well documented.
+and other comma-delimited path options in ways most people will never
+need to do.  If you're one of those edge cases, look at the source.
+It's well documented.
 
 Contributing
 ------------
