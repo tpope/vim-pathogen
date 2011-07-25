@@ -92,11 +92,11 @@ Self-Promotion
 --------------
 
 Like pathogen.vim?  Follow the repository on
-[GitHub](http://github.com/tpope/vim-pathogen) and vote for it on
+[GitHub](https://github.com/tpope/vim-pathogen) and vote for it on
 [vim.org](http://www.vim.org/scripts/script.php?script_id=2332).  And if
-you're feeling especially charitable, follow tpope on
+you're feeling especially charitable, follow [tpope](http://tpo.pe/) on
 [Twitter](http://twitter.com/tpope) and
-[GitHub](http://github.com/tpope).
+[GitHub](https://github.com/tpope).
 
 License
 -------
