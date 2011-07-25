@@ -24,6 +24,13 @@ Add this to your vimrc:
 
     call pathogen#infect()
 
+If you're brand new to Vim and lacking a vimrc, `vim ~/.vimrc` and paste
+in the following super-minimal example:
+
+    call pathogen#infect()
+    syntax on
+    filetype plugin indent on
+
 Now any plugins you wish to install can be extracted to a subdirectory
 under `~/.vim/bundle`, and they will be added to the `'runtimepath'`.
 Observe:
