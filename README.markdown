@@ -79,6 +79,14 @@ While any filename will work, I've chosen to follow the ancient
 tradition of `.cvsignore` because utilities like rsync use it, too.
 Clever, huh?
 
+> What about Vimballs?
+
+If you really must use one:
+
+    :e name.vba
+    :!mkdir ~/.vim/bundle/name
+    :UseVimball ~/.vim/bundle/name
+
 Contributing
 ------------
 
