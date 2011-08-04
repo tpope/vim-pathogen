@@ -153,8 +153,9 @@ let s:done_bundles = ''
 
 " Invoke :helptags on all non-$VIM doc directories in runtimepath.
 function! pathogen#helptags() " {{{1
+  let sep = pathogen#separator()
   for dir in pathogen#split(&rtp)
-    if dir[0 : strlen($VIMRUNTIME)-1] !=# $VIMRUNTIME && filewritable(dir.'/doc') == 2 && !empty(glob(dir.'/doc/*')) && (!filereadable(dir.'/doc/tags') || filewritable(dir.'/doc/tags'))
+    if (dir.sep)[0 : strlen($VIMRUNTIME)] !=# $VIMRUNTIME.sep && filewritable(dir.'/doc') == 2 && !empty(glob(dir.'/doc/*')) && (!filereadable(dir.'/doc/tags') || filewritable(dir.'/doc/tags'))
       helptags `=dir.'/doc'`
     endif
   endfor
