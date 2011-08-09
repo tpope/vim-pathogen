@@ -19,8 +19,8 @@ If you don't have `curl`, use `wget -O -` instead.
 By the way, if you're using Windows, change all occurrences of `~/.vim`
 to `~\vimfiles`.
 
-Usage
------
+Runtime Path Manipulation
+-------------------------
 
 Add this to your vimrc:
 
@@ -66,6 +66,42 @@ Finally, pathogen.vim has a rich API that can manipulate `'runtimepath'`
 and other comma-delimited path options in ways most people will never
 need to do.  If you're one of those edge cases, look at the source.
 It's well documented.
+
+Runtime File Editing
+--------------------
+
+As a guy who writes a lot of Vim script, I edit a lot of runtime files.
+For example, when editing a PDF file like I do everyday, I might notice
+something weird in the syntax highlighting and want to have a look:
+
+    :sp $VIMRUNTIME/syntax/pdf.vim
+
+Even the best case scenario with tab complete is painful:
+
+    :sp $VIMR<Tab>/synt<Tab>/pd<Tab>
+
+The picture is even bleaker if the file in question sits in a
+bundle.  Enter the V family of commands.  The V stands for Vimruntime
+(work with me here).
+
+    :Vsp s/pd<Tab>
+
+As you can see, not only does it eliminate the need to qualify the
+runtime path being targeted, the tab completion is friendlier, allowing
+you to expand multiple components at once.  Here's me editing
+pathogen.vim itself:
+
+    :Ve a/pat<Tab>
+
+In the event of duplicate files, you can give a count to disambiguate.
+Here's the full list of commands:
+
+* `:Vedit`
+* `:Vsplit`
+* `:Vvsplit`
+* `:Vtabedit`
+* `:Vpedit`
+* `:Vread`
 
 FAQ
 ---

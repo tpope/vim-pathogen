@@ -170,4 +170,55 @@ endfunction " }}}1
 
 command! -bar Helptags :call pathogen#helptags()
 
+" Like findfile(), but hardcoded to use the runtimepath.
+function! pathogen#rtpfindfile(file,count) "{{{1
+  let rtp = pathogen#join(1,pathogen#split(&rtp))
+  return fnamemodify(findfile(a:file,rtp,a:count),':p')
+endfunction " }}}1
+
+function! s:find(count,cmd,file) " {{{1
+  let rtp = pathogen#join(1,pathogen#split(&runtimepath))
+  let file = pathogen#rtpfindfile(a:file,a:count)
+  if file ==# ''
+    return "echoerr 'E345: Can''t find file \"".a:file."\" in runtimepath'"
+  else
+    return a:cmd.' '.fnameescape(file)
+  endif
+endfunction " }}}1
+
+function! s:Findcomplete(A,L,P) " {{{1
+  let sep = pathogen#separator()
+  let cheats = {
+        \'a': 'autoload',
+        \'d': 'doc',
+        \'f': 'ftplugin',
+        \'i': 'indent',
+        \'p': 'plugin',
+        \'s': 'syntax'}
+  if a:A =~# '^\w[\\/]' && has_key(cheats,a:A[0])
+    let request = cheats[a:A[0]].a:A[1:-1]
+  else
+    let request = a:A
+  endif
+  let pattern = substitute(request,'\'.sep,'*'.sep,'g').'*'
+  let found = {}
+  for path in pathogen#split(&runtimepath)
+    let matches = split(glob(path.sep.pattern),"\n")
+    call map(matches,'isdirectory(v:val) ? v:val.sep : v:val')
+    call map(matches,'v:val[strlen(path)+1:-1]')
+    for match in matches
+      let found[match] = 1
+    endfor
+  endfor
+  return sort(keys(found))
+endfunction " }}}1
+
+command! -bar -bang -count=1 -nargs=1 -complete=customlist,s:Findcomplete Ve       :execute s:find(<count>,'edit<bang>',<q-args>)
+command! -bar -bang -count=1 -nargs=1 -complete=customlist,s:Findcomplete Vedit    :execute s:find(<count>,'edit<bang>',<q-args>)
+command! -bar -bang -count=1 -nargs=1 -complete=customlist,s:Findcomplete Vsplit   :execute s:find(<count>,'split<bang>',<q-args>)
+command! -bar -bang -count=1 -nargs=1 -complete=customlist,s:Findcomplete Vvsplit  :execute s:find(<count>,'vsplit<bang>',<q-args>)
+command! -bar -bang -count=1 -nargs=1 -complete=customlist,s:Findcomplete Vtabedit :execute s:find(<count>,'tabedit<bang>',<q-args>)
+command! -bar -bang -count=1 -nargs=1 -complete=customlist,s:Findcomplete Vpedit   :execute s:find(<count>,'pedit<bang>',<q-args>)
+command! -bar -bang -count=1 -nargs=1 -complete=customlist,s:Findcomplete Vread    :execute s:find(<count>,'read<bang>',<q-args>)
+
 " vim:set ft=vim ts=8 sw=2 sts=2:
