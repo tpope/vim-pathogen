@@ -45,6 +45,16 @@ If you really want to get crazy, you could set it up as a submodule in
 whatever repository you keep your dot files in.  I don't like to get
 crazy.
 
+If you don't like the directory name `bundle`, you can pass a different
+name as an argument:
+
+    call pathogen#infect('stuff')
+
+You can also pass an entire path instead.  I keep the plugins I maintain
+under `~/src`, and this is how I add them:
+
+    call pathogen#infect('~/src/vim/bundle')
+
 Normally to generate documentation, Vim expects you to run `:helptags`
 on each directory with documentation (e.g., `:helptags ~/.vim/doc`).
 Provided with pathogen.vim is a `:Helptags` command that does this on

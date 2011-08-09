@@ -15,10 +15,17 @@ if exists("g:loaded_pathogen") || &cp
 endif
 let g:loaded_pathogen = 1
 
-" Point of entry for basic default usage.
+" Point of entry for basic default usage.  Give a directory name to invoke
+" pathogen#runtime_append_all_bundles() (defaults to "bundle"), or a full path
+" to invoke pathogen#runtime_prepend_subdirectories().  Afterwards,
+" pathogen#cycle_filetype() is invoked.
 function! pathogen#infect(...) abort " {{{1
   let source_path = a:0 ? a:1 : 'bundle'
-  call pathogen#runtime_append_all_bundles(source_path)
+  if source_path =~# '[\\/]'
+    call pathogen#runtime_prepend_subdirectories(source_path)
+  else
+    call pathogen#runtime_append_all_bundles(source_path)
+  endif
   call pathogen#cycle_filetype()
 endfunction " }}}1
 
