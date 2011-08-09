@@ -71,7 +71,7 @@ Runtime File Editing
 --------------------
 
 As a guy who writes a lot of Vim script, I edit a lot of runtime files.
-For example, when editing a PDF file like I do everyday, I might notice
+For example, when editing a PDF file like I do every day, I might notice
 something weird in the syntax highlighting and want to have a look:
 
     :sp $VIMRUNTIME/syntax/pdf.vim
