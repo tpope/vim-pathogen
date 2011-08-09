@@ -4,11 +4,12 @@
 
 " Install in ~/.vim/autoload (or ~\vimfiles\autoload).
 "
-" For management of individually installed plugins in ~/.vim/bundle
-" (or $HOME/vimfiles/bundle), adding 'call pathogen#infect()' to your
-" .vimrc prior to 'fileype plugin indent on' is the only other setup necessary.
+" For management of individually installed plugins in ~/.vim/bundle (or
+" ~\vimfiles\bundle), adding `call pathogen#infect()` to your .vimrc
+" prior to `fileype plugin indent on` is the only other setup necessary.
 "
-" API is documented below.
+" The API is documented inline below.  For maximum ease of reading,
+" :set foldmethod=marker
 
 if exists("g:loaded_pathogen") || &cp
   finish
