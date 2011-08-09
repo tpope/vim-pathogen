@@ -110,7 +110,7 @@ change something, `git commit --amend`.
 
 Beyond that, don't be shy about asking before patching.  What takes you
 hours might take me minutes simply because I have both domain knowledge
-and a perverse knowledge of VimScript so vast that many would consider
+and a perverse knowledge of Vim script so vast that many would consider
 it a symptom of mental illness.  On the flip side, some ideas I'll
 reject no matter how good the implementation is.  "Send a patch" is an
 edge case answer in my book.
