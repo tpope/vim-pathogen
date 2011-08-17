@@ -163,7 +163,7 @@ let s:done_bundles = ''
 function! pathogen#helptags() " {{{1
   let sep = pathogen#separator()
   for dir in pathogen#split(&rtp)
-    if (dir.sep)[0 : strlen($VIMRUNTIME)] !=# $VIMRUNTIME.sep && filewritable(dir.'/doc') == 2 && !empty(glob(dir.'/doc/*')) && (!filereadable(dir.'/doc/tags') || filewritable(dir.'/doc/tags'))
+    if (dir.sep)[0 : strlen($VIMRUNTIME)] !=# $VIMRUNTIME.sep && filewritable(dir.sep.'doc') == 2 && !empty(glob(dir.sep.'doc'.sep.'*')) && (!filereadable(dir.sep.'doc'.sep.'tags') || filewritable(dir.sep.'doc'.sep.'tags'))
       helptags `=dir.'/doc'`
     endif
   endfor
