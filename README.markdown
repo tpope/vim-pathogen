@@ -143,7 +143,7 @@ If your [commit message sucks](http://stopwritingramblingcommitmessages.com/),
 I'm not going to accept your pull request.  I've explained very politely
 dozens of times that
 [my general guidelines](http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html)
-are absolute rules on on my own repositories, so I may lack the energy
+are absolute rules on my own repositories, so I may lack the energy
 to explain it to you yet another time.  And please, if I ask you to
 change something, `git commit --amend`.
 
