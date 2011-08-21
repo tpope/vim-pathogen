@@ -103,8 +103,9 @@ Here's the full list of commands:
 * `:Vpedit`
 * `:Vread`
 
-There's also `:Vopen`, which is like `:Vedit` but does an `:lcd` to the
-containing runtime directory first.
+All but `:Vedit` automatically `:lcd` to the target's runtime path.  To
+surpress that behavior, use a `!`, and to `:lcd` with `:Vedit`, use
+`:Vopen` instead.
 
 FAQ
 ---
