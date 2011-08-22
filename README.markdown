@@ -104,7 +104,7 @@ Here's the full list of commands:
 * `:Vread`
 
 All but `:Vedit` automatically `:lcd` to the target's runtime path.  To
-surpress that behavior, use a `!`, and to `:lcd` with `:Vedit`, use
+suppress that behavior, use a `!`, and to `:lcd` with `:Vedit`, use
 `:Vopen` instead.
 
 FAQ
