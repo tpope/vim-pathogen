@@ -115,7 +115,11 @@ FAQ
 Sure, stick it under `~/.vim/bundle`, and prepend the following to your
 vimrc:
 
-    source ~/.vim/bundle/vim-pathogen/autoload/pathogen.vim
+    runtime bundle/vim-pathogen/autoload/pathogen.vim
+
+Or if your bundles are somewhere other than `~/.vim` (say, `~/src/vim`):
+
+    source ~/src/vim/bundle/vim-pathogen/autoload/pathogen.vim
 
 > Will you accept these 14 pull requests adding a `.gitignore` for
 > `tags` so I don't see untracked changes in my dot files repository?
