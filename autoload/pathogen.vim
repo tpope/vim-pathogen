@@ -77,6 +77,7 @@ function! pathogen#uniq(list) abort " {{{1
     if (a:list[i] ==# '' && exists('empty')) || has_key(seen,a:list[i])
       call remove(a:list,i)
     elseif a:list[i] ==# ''
+      let i += 1
       let empty = 1
     else
       let seen[a:list[i]] = 1
