@@ -11,7 +11,7 @@ Installation
 Install to `~/.vim/autoload/pathogen.vim`.  Or copy and paste:
 
     mkdir -p ~/.vim/autoload ~/.vim/bundle; \
-    curl -o ~/.vim/autoload/pathogen.vim \
+    curl -so ~/.vim/autoload/pathogen.vim \
         https://raw.github.com/tpope/vim-pathogen/HEAD/autoload/pathogen.vim
 
 
