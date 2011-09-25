@@ -6,7 +6,7 @@
 "
 " For management of individually installed plugins in ~/.vim/bundle (or
 " ~\vimfiles\bundle), adding `call pathogen#infect()` to your .vimrc
-" prior to `fileype plugin indent on` is the only other setup necessary.
+" prior to `filetype plugin indent on` is the only other setup necessary.
 "
 " The API is documented inline below.  For maximum ease of reading,
 " :set foldmethod=marker
