@@ -214,7 +214,7 @@ function! s:Findcomplete(A,L,P) " {{{1
     let path = expand(path, ':p')
     let matches = split(glob(path.sep.pattern),"\n")
     call map(matches,'isdirectory(v:val) ? v:val.sep : v:val')
-    call map(matches,'v:val[strlen(path)+1:-1]')
+    call map(matches,'expand(v:val, ":p")[strlen(path)+1:-1]')
     for match in matches
       let found[match] = 1
     endfor
