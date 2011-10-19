@@ -211,6 +211,7 @@ function! s:Findcomplete(A,L,P) " {{{1
   let pattern = substitute(request,'\'.sep,'*'.sep,'g').'*'
   let found = {}
   for path in pathogen#split(&runtimepath)
+    let path = expand(path, ':p')
     let matches = split(glob(path.sep.pattern),"\n")
     call map(matches,'isdirectory(v:val) ? v:val.sep : v:val')
     call map(matches,'v:val[strlen(path)+1:-1]')
