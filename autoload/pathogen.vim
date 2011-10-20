@@ -177,7 +177,7 @@ command! -bar Helptags :call pathogen#helptags()
 " Like findfile(), but hardcoded to use the runtimepath.
 function! pathogen#runtime_findfile(file,count) "{{{1
   let rtp = pathogen#join(1,pathogen#split(&rtp))
-  return fnamemodify(findfile(a:file,rtp,a:count),':p')
+  return fnamemodify(findfile(a:file,rtp),':p')
 endfunction " }}}1
 
 function! s:find(count,cmd,file,lcd) " {{{1
@@ -211,9 +211,10 @@ function! s:Findcomplete(A,L,P) " {{{1
   let pattern = substitute(request,'\'.sep,'*'.sep,'g').'*'
   let found = {}
   for path in pathogen#split(&runtimepath)
+    let path = expand(path, ':p')
     let matches = split(glob(path.sep.pattern),"\n")
     call map(matches,'isdirectory(v:val) ? v:val.sep : v:val')
-    call map(matches,'v:val[strlen(path)+1:-1]')
+    call map(matches,'expand(v:val, ":p")[strlen(path)+1:-1]')
     for match in matches
       let found[match] = 1
     endfor
