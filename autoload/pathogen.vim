@@ -177,7 +177,7 @@ command! -bar Helptags :call pathogen#helptags()
 " Like findfile(), but hardcoded to use the runtimepath.
 function! pathogen#runtime_findfile(file,count) "{{{1
   let rtp = pathogen#join(1,pathogen#split(&rtp))
-  return fnamemodify(findfile(a:file,rtp),':p')
+  return fnamemodify(findfile(a:file,rtp,a:count),':p')
 endfunction " }}}1
 
 function! s:find(count,cmd,file,lcd) " {{{1
