@@ -177,7 +177,12 @@ command! -bar Helptags :call pathogen#helptags()
 " Like findfile(), but hardcoded to use the runtimepath.
 function! pathogen#runtime_findfile(file,count) "{{{1
   let rtp = pathogen#join(1,pathogen#split(&rtp))
-  return fnamemodify(findfile(a:file,rtp,a:count),':p')
+  let file = findfile(a:file,rtp,a:count)
+  if file ==# ''
+    return ''
+  else
+    return fnamemodify(file,':p')
+  endif
 endfunction " }}}1
 
 " Backport of fnameescape().
