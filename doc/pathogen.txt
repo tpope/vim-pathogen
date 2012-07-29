@@ -1,0 +1,60 @@
+*pathogen.vim*  Manage your 'runtimepath' with ease.
+
+Author:  Tim Pope <http://tpo.pe/>
+License: Same terms as Vim itself (see |license|)
+
+INTRODUCTION                                    *pathogen*
+
+Manage your 'runtimepath' with ease.  In practical terms, pathogen.vim
+makes it super easy to install plugins and runtime files in their own
+private directories.
+
+RUNTIME FILE EDITING                            *Vedit* *Vsplit* *Vvsplit*
+                                                *Vtabedit* *Vpedit* *Vread*
+
+As a guy who writes a lot of Vim script, I edit a lot of runtime files.
+For example, when editing PDF files like I do every day, I might notice
+something weird in the syntax highlighting and want to have a look: >
+
+    :sp $VIMRUNTIME/syntax/pdf.vim
+<
+Even the best case scenario with tab complete is painful: >
+
+    :sp $VIMR<Tab>/synt<Tab>/pd<Tab>
+<
+The picture is even bleaker if the file in question sits in a
+bundle.  Enter the V family of commands.  The V stands for Vimruntime
+(work with me here). >
+
+    :Vsp s/pd<Tab>
+<
+As you can see, not only does it eliminate the need to qualify the
+runtime path being targeted, the tab completion is friendlier, allowing
+you to expand multiple components at once.  Here's me editing
+pathogen.vim itself: >
+
+    :Ve a/pat<Tab>
+<
+In the event of duplicate files, you can give a count to disambiguate.
+Here's the full list of commands:
+
+* |:Vedit|
+* |:Vsplit|
+* |:Vvsplit|
+* |:Vtabedit|
+* |:Vpedit|
+* |:Vread|
+
+All but |:Vedit| automatically |:lcd| to the target's runtime path.  To
+suppress that behavior, use a |!|, and to |:lcd| with |:Vedit|, use
+|:Vopen| instead.
+
+
+
+ABOUT                                           *pathogen-about*
+
+Grab the latest version or report a bug on GitHub:
+
+http://github.com/tpope/vim-pathogen
+
+ vim:tw=78:et:ft=help:norl:
