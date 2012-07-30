@@ -224,7 +224,7 @@ function! s:Findcomplete(A,L,P) " {{{1
   else
     let request = a:A
   endif
-  let pattern = substitute(request,'\'.sep,'*'.sep,'g').'*'
+  let pattern = substitute(request,'/\|\'.sep,'*'.sep,'g').'*'
   let found = {}
   for path in pathogen#split(&runtimepath)
     let path = expand(path, ':p')
