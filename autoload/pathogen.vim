@@ -196,6 +196,10 @@ function! pathogen#fnameescape(string) " {{{1
   endif
 endfunction " }}}1
 
+if exists(':Vedit')
+  finish
+endif
+
 function! s:find(count,cmd,file,lcd) " {{{1
   let rtp = pathogen#join(1,pathogen#split(&runtimepath))
   let file = pathogen#runtime_findfile(a:file,a:count)
