@@ -67,6 +67,8 @@ It's well documented.
 Runtime File Editing
 --------------------
 
+*These are moving to [scriptease.vim](/tpope/vim-scriptease)!*
+
 As a guy who writes a lot of Vim script, I edit a lot of runtime files.
 For example, when editing PDF files like I do every day, I might notice
 something weird in the syntax highlighting and want to have a look:
