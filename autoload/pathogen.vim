@@ -28,6 +28,7 @@ function! pathogen#infect(...) abort " {{{1
     call pathogen#runtime_append_all_bundles(source_path)
   endif
   call pathogen#cycle_filetype()
+  return ''
 endfunction " }}}1
 
 " Split a path into a list.
