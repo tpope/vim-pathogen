@@ -21,12 +21,12 @@ Runtime Path Manipulation
 
 Add this to your vimrc:
 
-    call pathogen#infect()
+    execute pathogen#infect()
 
 If you're brand new to Vim and lacking a vimrc, `vim ~/.vimrc` and paste
 in the following super-minimal example:
 
-    call pathogen#infect()
+    execute pathogen#infect()
     syntax on
     filetype plugin indent on
 
@@ -45,12 +45,12 @@ crazy.
 If you don't like the directory name `bundle`, you can pass a different
 name as an argument:
 
-    call pathogen#infect('stuff')
+    execute pathogen#infect('stuff')
 
 You can also pass an entire path instead.  I keep the plugins I maintain
 under `~/src`, and this is how I add them:
 
-    call pathogen#infect('~/src/vim/bundle')
+    execute pathogen#infect('~/src/vim/bundle')
 
 Normally to generate documentation, Vim expects you to run `:helptags`
 on each directory with documentation (e.g., `:helptags ~/.vim/doc`).
