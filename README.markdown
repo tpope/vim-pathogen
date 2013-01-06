@@ -35,9 +35,9 @@ under `~/.vim/bundle`, and they will be added to the `'runtimepath'`.
 Observe:
 
     cd ~/.vim/bundle
-    git clone git://github.com/tpope/vim-fugitive.git
+    git clone git://github.com/tpope/vim-sensible.git
 
-Now [fugitive.vim](https://github.com/tpope/vim-fugitive) is installed.
+Now [sensible.vim](https://github.com/tpope/vim-sensible) is installed.
 If you really want to get crazy, you could set it up as a submodule in
 whatever repository you keep your dot files in.  I don't like to get
 crazy.
