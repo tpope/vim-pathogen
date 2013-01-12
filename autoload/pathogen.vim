@@ -17,8 +17,8 @@ endif
 let g:loaded_pathogen = 1
 
 " Point of entry for basic default usage.  Give a directory name to invoke
-" pathogen#runtime_append_all_bundles() (defaults to "bundle"), or a full path
-" plus {} to invoke pathogen#runtime_prepend_subdirectories().  Afterwards,
+" pathogen#incubate() (defaults to "bundle"), or a full path plus {} to invoke
+" pathogen#runtime_prepend_subdirectories().  Afterwards,
 " pathogen#cycle_filetype() is invoked.
 "
 " Examples:
@@ -33,7 +33,7 @@ function! pathogen#infect(...) abort " {{{1
   elseif source_path =~# '[\\/]'
     call pathogen#runtime_prepend_subdirectories(source_path)
   else
-    call pathogen#runtime_append_all_bundles(source_path)
+    call pathogen#incubate(source_path)
   endif
   call pathogen#cycle_filetype()
   return ''
@@ -147,11 +147,11 @@ function! pathogen#runtime_prepend_subdirectories(path) " {{{1
   return &rtp
 endfunction " }}}1
 
-" For each directory in rtp, check for a subdirectory named dir.  If it
+" For each directory in rtp, check for the provided subdirectory.  If it
 " exists, add all subdirectories of that subdirectory to the rtp, immediately
 " after the original directory.  If no argument is given, 'bundle' is used.
 " Repeated calls with the same arguments are ignored.
-function! pathogen#runtime_append_all_bundles(...) " {{{1
+function! pathogen#incubate(...) " {{{1
   let sep = pathogen#separator()
   let name = a:0 ? a:1 : 'bundle'
   if "\n".s:done_bundles =~# "\\M\n".name."\n"
@@ -168,6 +168,16 @@ function! pathogen#runtime_append_all_bundles(...) " {{{1
   endfor
   let &rtp = pathogen#join(pathogen#uniq(list))
   return 1
+endfunction
+
+" Deprecated alias for pathogen#incubate().
+function! pathogen#runtime_append_all_bundles(...) " {{{1
+  if &verbose
+    echohl WarningMsg
+    echomsg 'pathogen#runtime_append_all_bundles() will be renamed to pathogen#incubate()'
+    echohl NONE
+  endif
+  return call('pathogen#incubate', a:000)
 endfunction
 
 let s:done_bundles = ''
