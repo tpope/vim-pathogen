@@ -140,21 +140,22 @@ endfunction "}}}1
 
 " Prepend the given path and append its corresponding after directory.  If the
 " directory is already included, move it to the outermost position.
-function! pathogen#surround(path) " {{{1
+function! pathogen#surround(path) abort " {{{1
   let sep = pathogen#separator()
   let rtp = pathogen#split(&rtp)
-  let path = fnamemodify(a:path, ':p')
-  if path =~# '[\\/]{}$'
-    let path = path[0:-4]
-    let before = filter(pathogen#glob_directories(path), '!pathogen#is_disabled(v:val)')
-    let after  = filter(pathogen#glob_directories(path.sep."*".sep."after"), '!pathogen#is_disabled(v:val[0:-7])')
+  if a:path =~# '[\\/]{}$'
+    let path = fnamemodify(a:path[0:-4], ':p:s?[\\/]$??')
+    let before = filter(pathogen#glob_directories(path.sep.'*'), '!pathogen#is_disabled(v:val)')
+    let after  = filter(reverse(pathogen#glob_directories(path.sep."*".sep."after"), '!pathogen#is_disabled(v:val[0:-7])'))
     call filter(rtp,'v:val[0:strlen(path)-1] !=# path')
   else
-    let before = [expand(a:path)]
-    let after = [before . sep . 'after']
-    call filter(rtp, 'index(before + after, v:val) != -1')
+    let path = fnamemodify(a:path, ':p')
+    let before = [path]
+    let after = [path . sep . 'after']
+    call filter(rtp, 'index(before + after, v:val) == -1')
   endif
   let &rtp = pathogen#join(before, rtp, after)
+  return &rtp
 endfunction " }}}1
 
 " Prepend all subdirectories of path to the rtp, and append all 'after'
