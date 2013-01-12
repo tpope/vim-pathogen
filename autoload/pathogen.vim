@@ -190,7 +190,7 @@ function! pathogen#incubate(...) " {{{1
   endfor
   let &rtp = pathogen#join(pathogen#uniq(list))
   return 1
-endfunction
+endfunction " }}}1
 
 " Deprecated alias for pathogen#incubate().
 function! pathogen#runtime_append_all_bundles(...) " {{{1
