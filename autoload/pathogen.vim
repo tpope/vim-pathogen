@@ -144,12 +144,12 @@ function! pathogen#surround(path) abort " {{{1
   let sep = pathogen#separator()
   let rtp = pathogen#split(&rtp)
   if a:path =~# '[\\/]{}$'
-    let path = fnamemodify(a:path[0:-4], ':p')[0:-2]
+    let path = fnamemodify(a:path[0:-4], ':p:s?[\\/]\=$??')
     let before = filter(pathogen#glob_directories(path.sep.'*'), '!pathogen#is_disabled(v:val)')
     let after  = filter(reverse(pathogen#glob_directories(path.sep."*".sep."after")), '!pathogen#is_disabled(v:val[0:-7])')
     call filter(rtp,'v:val[0:strlen(path)-1] !=# path')
   else
-    let path = fnamemodify(a:path, ':p')[0:-2]
+    let path = fnamemodify(a:path, ':p:s?[\\/]\=$??')
     let before = [path]
     let after = [path . sep . 'after']
     call filter(rtp, 'index(before + after, v:val) == -1')
