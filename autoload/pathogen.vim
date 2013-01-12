@@ -18,8 +18,7 @@ let g:loaded_pathogen = 1
 
 " Point of entry for basic default usage.  Give a directory name to invoke
 " pathogen#incubate() (defaults to "bundle"), or a full path plus {} to invoke
-" pathogen#runtime_prepend_subdirectories().  Afterwards,
-" pathogen#cycle_filetype() is invoked.
+" pathogen#surround().  Afterwards, pathogen#cycle_filetype() is invoked.
 "
 " Examples:
 "
@@ -29,9 +28,14 @@ let g:loaded_pathogen = 1
 function! pathogen#infect(...) abort " {{{1
   let source_path = a:0 ? a:1 : 'bundle'
   if source_path =~# '[\\/]{}$'
-    call pathogen#runtime_prepend_subdirectories(source_path[0:-4])
+    call pathogen#surround(source_path)
   elseif source_path =~# '[\\/]'
-    call pathogen#runtime_prepend_subdirectories(source_path)
+    if &verbose
+      echohl WarningMsg
+      echomsg 'pathogen#infect() will soon require a trailing "/{}" to absolute paths'
+      echohl NONE
+    endif
+    call pathogen#surround(source_path.'/{}')
   else
     call pathogen#incubate(source_path)
   endif
@@ -134,17 +138,34 @@ function! pathogen#is_disabled(path) " {{{1
   return index(blacklist, strpart(a:path, strridx(a:path, sep)+1)) != -1 && index(blacklist, a:path) != 1
 endfunction "}}}1
 
+" Prepend the given path and append its corresponding after directory.  If the
+" directory is already included, move it to the outermost position.
+function! pathogen#surround(path) " {{{1
+  let sep = pathogen#separator()
+  let rtp = pathogen#split(&rtp)
+  let path = fnamemodify(a:path, ':p')
+  if path =~# '[\\/]{}$'
+    let path = path[0:-4]
+    let before = filter(pathogen#glob_directories(path), '!pathogen#is_disabled(v:val)')
+    let after  = filter(pathogen#glob_directories(path.sep."*".sep."after"), '!pathogen#is_disabled(v:val[0:-7])')
+    call filter(rtp,'v:val[0:strlen(path)-1] !=# path')
+  else
+    let before = [expand(a:path)]
+    let after = [before . sep . 'after']
+    call filter(rtp, 'index(before + after, v:val) != -1')
+  endif
+  let &rtp = pathogen#join(before, rtp, after)
+endfunction " }}}1
+
 " Prepend all subdirectories of path to the rtp, and append all 'after'
 " directories in those subdirectories.
 function! pathogen#runtime_prepend_subdirectories(path) " {{{1
-  let sep    = pathogen#separator()
-  let before = filter(pathogen#glob_directories(a:path.sep."*"), '!pathogen#is_disabled(v:val)')
-  let after  = filter(pathogen#glob_directories(a:path.sep."*".sep."after"), '!pathogen#is_disabled(v:val[0:-7])')
-  let rtp = pathogen#split(&rtp)
-  let path = expand(a:path)
-  call filter(rtp,'v:val[0:strlen(path)-1] !=# path')
-  let &rtp = pathogen#join(pathogen#uniq(before + rtp + after))
-  return &rtp
+  if &verbose
+    echohl WarningMsg
+    echomsg 'pathogen#runtime_append_all_bundles() will be replaced by pathogen#incubate()'
+    echohl NONE
+  endif
+  return pathogen#surround(a:path . pathogen#separator() . '{}')
 endfunction " }}}1
 
 " For each directory in rtp, check for the provided subdirectory.  If it
