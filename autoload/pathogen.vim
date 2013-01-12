@@ -173,7 +173,7 @@ endfunction " }}}1
 " exists, add all subdirectories of that subdirectory to the rtp, immediately
 " after the original directory.  If no argument is given, 'bundle' is used.
 " Repeated calls with the same arguments are ignored.
-function! pathogen#incubate(...) " {{{1
+function! pathogen#incubate(...) abort " {{{1
   let sep = pathogen#separator()
   let name = a:0 ? a:1 : 'bundle'
   if "\n".s:done_bundles =~# "\\M\n".name."\n"
@@ -193,7 +193,7 @@ function! pathogen#incubate(...) " {{{1
 endfunction " }}}1
 
 " Deprecated alias for pathogen#incubate().
-function! pathogen#runtime_append_all_bundles(...) " {{{1
+function! pathogen#runtime_append_all_bundles(...) abort " {{{1
   if &verbose
     echohl WarningMsg
     echomsg 'pathogen#runtime_append_all_bundles() will be renamed to pathogen#incubate()'
@@ -206,7 +206,7 @@ let s:done_bundles = ''
 " }}}1
 
 " Invoke :helptags on all non-$VIM doc directories in runtimepath.
-function! pathogen#helptags() " {{{1
+function! pathogen#helptags() abort " {{{1
   let sep = pathogen#separator()
   for dir in pathogen#split(&rtp)
     if (dir.sep)[0 : strlen($VIMRUNTIME)] !=# $VIMRUNTIME.sep && filewritable(dir.sep.'doc') == 2 && !empty(filter(split(glob(dir.sep.'doc'.sep.'*'),"\n>"),'!isdirectory(v:val)')) && (!filereadable(dir.sep.'doc'.sep.'tags') || filewritable(dir.sep.'doc'.sep.'tags'))
@@ -218,7 +218,7 @@ endfunction " }}}1
 command! -bar Helptags :call pathogen#helptags()
 
 " Like findfile(), but hardcoded to use the runtimepath.
-function! pathogen#runtime_findfile(file,count) "{{{1
+function! pathogen#runtime_findfile(file,count) abort "{{{1
   let rtp = pathogen#join(1,pathogen#split(&rtp))
   let file = findfile(a:file,rtp,a:count)
   if file ==# ''
@@ -229,7 +229,7 @@ function! pathogen#runtime_findfile(file,count) "{{{1
 endfunction " }}}1
 
 " Backport of fnameescape().
-function! pathogen#fnameescape(string) " {{{1
+function! pathogen#fnameescape(string) abort " {{{1
   if exists('*fnameescape')
     return fnameescape(a:string)
   elseif a:string ==# '-'
