@@ -112,8 +112,9 @@ function! pathogen#cycle_filetype() " {{{1
   endif
 endfunction " }}}1
 
-" Checks if a bundle is 'disabled'. A bundle is considered 'disabled' if
-" its 'basename()' is included in g:pathogen_disabled[]' or ends in a tilde.
+" Check if a bundle is disabled.  A bundle is considered disabled if it ends
+" in a tilde or its basename or full name is included in the list
+" g:pathogen_disabled.
 function! pathogen#is_disabled(path) " {{{1
   if a:path =~# '\~$'
     return 1
@@ -121,7 +122,8 @@ function! pathogen#is_disabled(path) " {{{1
     return 0
   endif
   let sep = pathogen#separator()
-  return index(g:pathogen_disabled, strpart(a:path, strridx(a:path, sep)+1)) != -1
+  let blacklist = g:pathogen_disabled
+  return index(blacklist, strpart(a:path, strridx(a:path, sep)+1)) != -1 && index(blacklist, a:path) != 1
 endfunction "}}}1
 
 " Prepend all subdirectories of path to the rtp, and append all 'after'
