@@ -47,11 +47,12 @@ name as an argument:
 
     execute pathogen#infect('stuff')
 
-You can also pass an absolute path instead, if you append `/{}` to it.  (This
-is a flag to aid transition to a more flexible future API.)  keep the plugins
-I maintain under `~/src`, and this is how I add them:
+You can also pass an absolute path instead, if you append `/*` to it.  (This
+is special cased for backwards compatiblity, but future versions will allow
+any arbitrary glob.)  I keep the plugins I maintain under `~/src`, and this is
+how I add them:
 
-    execute pathogen#infect('~/src/vim/bundle/{}')
+    execute pathogen#infect('~/src/vim/bundle/*')
 
 Normally to generate documentation, Vim expects you to run `:helptags`
 on each directory with documentation (e.g., `:helptags ~/.vim/doc`).
