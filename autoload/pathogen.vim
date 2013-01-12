@@ -17,14 +17,10 @@ endif
 let g:loaded_pathogen = 1
 
 " Point of entry for basic default usage.  Give a directory name to invoke
-" pathogen#incubate() (defaults to "bundle"), or a full path plus {} to invoke
-" pathogen#surround().  Afterwards, pathogen#cycle_filetype() is invoked.
-"
-" Examples:
-"
-"   call pathogen#infect()
-"   call pathogen#infect("runtime_relative_path")
-"   call pathogen#infect("~/src/vim/bundle/{}")
+" pathogen#incubate() (defaults to "bundle"), or a full path to invoke
+" pathogen#surround().  For backwards compatibility purposes, a full path that
+" does not end in {} or * is given to pathogen#runtime_prepend_subdirectories()
+" instead.
 function! pathogen#infect(...) abort " {{{1
   let source_path = a:0 ? a:1 : 'bundle'
   if source_path =~# '[\\/]\%({}\|\*\)$'
@@ -138,8 +134,10 @@ function! pathogen#is_disabled(path) " {{{1
   return index(blacklist, strpart(a:path, strridx(a:path, sep)+1)) != -1 && index(blacklist, a:path) != 1
 endfunction "}}}1
 
-" Prepend the given path and append its corresponding after directory.  If the
-" directory is already included, move it to the outermost position.
+" Prepend the given directory to the runtime path and append its corresponding
+" after directory.  If the directory is already included, move it to the
+" outermost position.  Wildcards are added as is.  Ending a path in /{} causes
+" all subdirectories to be added (except those in g:pathogen_disabled).
 function! pathogen#surround(path) abort " {{{1
   let sep = pathogen#separator()
   let rtp = pathogen#split(&rtp)
@@ -216,6 +214,12 @@ function! pathogen#helptags() abort " {{{1
 endfunction " }}}1
 
 command! -bar Helptags :call pathogen#helptags()
+
+" Execute the given command.  This is basically a backdoor for --remote-expr.
+function! pathogen#execute(command) abort " {{{1
+  execute a:command
+  return ''
+endfunction " }}}1
 
 " Like findfile(), but hardcoded to use the runtimepath.
 function! pathogen#runtime_findfile(file,count) abort "{{{1
