@@ -25,6 +25,8 @@ function! pathogen#infect(...) abort " {{{1
   let source_path = a:0 ? a:1 : 'bundle'
   if source_path =~# '[\\/]\%({}\|\*\)$'
     call pathogen#surround(source_path)
+  elseif source_path =~# '[\\/]$'
+    call pathogen#surround(source_path . '{}')
   elseif source_path =~# '[\\/]'
     if &verbose
       echohl WarningMsg
