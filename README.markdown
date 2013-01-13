@@ -1,12 +1,10 @@
-pathogen.vim
-============
+# pathogen.vim
 
 Manage your `'runtimepath'` with ease.  In practical terms, pathogen.vim
 makes it super easy to install plugins and runtime files in their own
 private directories.
 
-Installation
-------------
+## Installation
 
 Install to `~/.vim/autoload/pathogen.vim`.  Or copy and paste:
 
@@ -16,8 +14,7 @@ Install to `~/.vim/autoload/pathogen.vim`.  Or copy and paste:
 
 If you're using Windows, change all occurrences of `~/.vim` to `~\vimfiles`.
 
-Runtime Path Manipulation
--------------------------
+## Runtime Path Manipulation
 
 Add this to your vimrc:
 
@@ -66,16 +63,14 @@ and other comma-delimited path options in ways most people will never
 need to do.  If you're one of those edge cases, look at the source.
 It's well documented.
 
-Runtime File Editing
---------------------
+## Runtime File Editing
 
 `:Vopen`, `:Vedit`, `:Vsplit`, `:Vvsplit`, `:Vtabedit`, `:Vpedit`, and
 `:Vread` have all moved to [scriptease.vim][]
 
 [scriptease.vim]: https://github.com/tpope/vim-scriptease
 
-FAQ
----
+## FAQ
 
 > Can I put pathogen.vim in a submodule like all my other plugins?
 
@@ -108,8 +103,7 @@ If you really must use one:
     :!mkdir ~/.vim/bundle/name
     :UseVimball ~/.vim/bundle/name
 
-Contributing
-------------
+## Contributing
 
 If your [commit message sucks](http://stopwritingramblingcommitmessages.com/),
 I'm not going to accept your pull request.  I've explained very politely
@@ -126,8 +120,7 @@ it a symptom of mental illness.  On the flip side, some ideas I'll
 reject no matter how good the implementation is.  "Send a patch" is an
 edge case answer in my book.
 
-Self-Promotion
---------------
+## Self-Promotion
 
 Like pathogen.vim?  Follow the repository on
 [GitHub](https://github.com/tpope/vim-pathogen) and vote for it on
@@ -136,8 +129,7 @@ you're feeling especially charitable, follow [tpope](http://tpo.pe/) on
 [Twitter](http://twitter.com/tpope) and
 [GitHub](https://github.com/tpope).
 
-License
--------
+## License
 
 Copyright (c) Tim Pope.  Distributed under the same terms as Vim itself.
 See `:help license`.
