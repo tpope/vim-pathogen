@@ -39,17 +39,17 @@ If you really want to get crazy, you could set it up as a submodule in
 whatever repository you keep your dot files in.  I don't like to get
 crazy.
 
-If you don't like the directory name `bundle`, you can pass a different
-name as an argument:
+If you don't like the directory name `bundle`, you can pass a runtime relative
+glob as an argument:
 
-    execute pathogen#infect('stuff')
+    execute pathogen#infect('stuff/{}')
 
-You can also pass an absolute path instead, if you append `/*` to it.  (This
-is special cased for backwards compatiblity, but future versions will allow
-any arbitrary glob.)  I keep the plugins I maintain under `~/src`, and this is
-how I add them:
+The `{}` indicates where the expansion should occur.  Currently only a
+trailing `{}` is supported.
 
-    execute pathogen#infect('~/src/vim/bundle/*')
+You can also pass an absolute path instead.  I keep the plugins I maintain under `~/src`, and this is how I add them:
+
+    execute pathogen#infect('~/src/vim/bundle/{}')
 
 Normally to generate documentation, Vim expects you to run `:helptags`
 on each directory with documentation (e.g., `:helptags ~/.vim/doc`).

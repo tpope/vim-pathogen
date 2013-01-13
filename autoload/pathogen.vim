@@ -23,19 +23,19 @@ let g:loaded_pathogen = 1
 " instead.
 function! pathogen#infect(...) abort " {{{1
   let source_path = a:0 ? a:1 : 'bundle'
-  if source_path =~# '[\\/]\%({}\|\*\)$'
+  if source_path =~# '^[^\\/]\+\%([\\/]\%({}\|\*\)\=\)\=$'
+    call pathogen#incubate(source_path)
+  elseif source_path =~# '[\\/]\%({}\|\*\)$'
     call pathogen#surround(source_path)
   elseif source_path =~# '[\\/]$'
     call pathogen#surround(source_path . '{}')
-  elseif source_path =~# '[\\/]'
+  else
     if &verbose
       echohl WarningMsg
       echomsg 'pathogen#infect() will soon require a trailing "/{}" to absolute paths'
       echohl NONE
     endif
     call pathogen#surround(source_path.'/{}')
-  else
-    call pathogen#incubate(source_path)
   endif
   call pathogen#cycle_filetype()
   return ''
@@ -175,7 +175,7 @@ endfunction " }}}1
 " Repeated calls with the same arguments are ignored.
 function! pathogen#incubate(...) abort " {{{1
   let sep = pathogen#separator()
-  let name = a:0 ? a:1 : 'bundle'
+  let name = a:0 ? substitute(a:1, '[\\/]\%({}\)\=$', '', '') : 'bundle'
   if "\n".s:done_bundles =~# "\\M\n".name."\n"
     return ""
   endif
@@ -183,9 +183,17 @@ function! pathogen#incubate(...) abort " {{{1
   let list = []
   for dir in pathogen#split(&rtp)
     if dir =~# '\<after$'
-      let list +=  filter(pathogen#glob_directories(substitute(dir,'after$',name,'').sep.'*[^~]'.sep.'after'), '!pathogen#is_disabled(v:val[0:-7])') + [dir]
+      if name =~# '*'
+        let list += [dir, substitute(dir, 'after$', '', '') . name . sep . 'after']
+      else
+        let list +=  filter(pathogen#glob_directories(substitute(dir,'after$',name,'').sep.'*[^~]'.sep.'after'), '!pathogen#is_disabled(v:val[0:-7])') + [dir]
+      endif
     else
-      let list +=  [dir] + filter(pathogen#glob_directories(dir.sep.name.sep.'*[^~]'), '!pathogen#is_disabled(v:val)')
+      if name =~# '*'
+        let list += [dir . sep . name, dir]
+      else
+        let list +=  [dir] + filter(pathogen#glob_directories(dir.sep.name.sep.'*[^~]'), '!pathogen#is_disabled(v:val)')
+      endif
     endif
   endfor
   let &rtp = pathogen#join(pathogen#uniq(list))
