@@ -218,8 +218,10 @@ endfunction " }}}1
 command! -bar Helptags :call pathogen#helptags()
 
 " Execute the given command.  This is basically a backdoor for --remote-expr.
-function! pathogen#execute(command) abort " {{{1
-  execute a:command
+function! pathogen#execute(...) abort " {{{1
+  for command in a:000
+    execute command
+  endfor
   return ''
 endfunction " }}}1
 
