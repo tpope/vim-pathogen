@@ -211,7 +211,7 @@ function! pathogen#runtime_append_all_bundles(...) abort " {{{1
   else
     call s:warn('Change pathogen#runtime_append_all_bundles() to pathogen#incubate()')
   endif
-  return call('pathogen#incubate', map(copy(a:000, 'v:val . "/{}"'))
+  return call('pathogen#incubate', map(copy(a:000),'v:val . "/{}"'))
 endfunction
 
 let s:done_bundles = ''
