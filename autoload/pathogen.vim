@@ -16,26 +16,31 @@ if exists("g:loaded_pathogen") || &cp
 endif
 let g:loaded_pathogen = 1
 
+function! s:warn(msg)
+  if &verbose
+    echohl WarningMsg
+    echomsg a:msg
+    echohl NONE
+  endif
+endfunction
+
 " Point of entry for basic default usage.  Give a directory name to invoke
 " pathogen#incubate() (defaults to "bundle"), or a full path to invoke
 " pathogen#surround().  For backwards compatibility purposes, a full path that
 " does not end in {} or * is given to pathogen#runtime_prepend_subdirectories()
 " instead.
 function! pathogen#infect(...) abort " {{{1
-  let source_path = a:0 ? a:1 : 'bundle'
-  if source_path =~# '^[^\\/]\+\%([\\/]\%({}\|\*\)\=\)\=$'
-    call pathogen#incubate(source_path)
-  elseif source_path =~# '[\\/]\%({}\|\*\)$'
-    call pathogen#surround(source_path)
-  elseif source_path =~# '[\\/]$'
-    call pathogen#surround(source_path . '{}')
+  let path = a:0 ? a:1 : 'bundle/{}'
+  if path =~# '^[^\\/]\+$'
+    call s:warn('Change pathogen#infect('.string(path).') to pathogen#infect('.string(path.'/{}').')')
+    call pathogen#incubate(path . '/{}')
+  elseif path =~# '^[^\\/]\+[\\/]\%({}\|\*\)$'
+    call pathogen#incubate(path)
+  elseif path =~# '[\\/]\%({}\|\*\)$'
+    call pathogen#surround(path)
   else
-    if &verbose
-      echohl WarningMsg
-      echomsg 'pathogen#infect() will soon require a trailing "/{}" to absolute paths'
-      echohl NONE
-    endif
-    call pathogen#surround(source_path.'/{}')
+    call s:warn('Change pathogen#infect('.string(path).') to pathogen#infect('.string(path.'/{}').')')
+    call pathogen#surround(path . '/{}')
   endif
   call pathogen#cycle_filetype()
   return ''
@@ -161,11 +166,7 @@ endfunction " }}}1
 " Prepend all subdirectories of path to the rtp, and append all 'after'
 " directories in those subdirectories.
 function! pathogen#runtime_prepend_subdirectories(path) " {{{1
-  if &verbose
-    echohl WarningMsg
-    echomsg 'pathogen#runtime_append_all_bundles() will be replaced by pathogen#incubate()'
-    echohl NONE
-  endif
+  call s:warn('Change pathogen#runtime_prepend_subdirectories('.string(source_path).') to pathogen#surround('.string(source_path.'/{}').')')
   return pathogen#surround(a:path . pathogen#separator() . '{}')
 endfunction " }}}1
 
@@ -175,7 +176,7 @@ endfunction " }}}1
 " Repeated calls with the same arguments are ignored.
 function! pathogen#incubate(...) abort " {{{1
   let sep = pathogen#separator()
-  let name = a:0 ? substitute(a:1, '[\\/]\%({}\)\=$', '', '') : 'bundle'
+  let name = a:0 ? substitute(a:1, '[\\/]{}$', '', '') : 'bundle'
   if "\n".s:done_bundles =~# "\\M\n".name."\n"
     return ""
   endif
@@ -202,12 +203,8 @@ endfunction " }}}1
 
 " Deprecated alias for pathogen#incubate().
 function! pathogen#runtime_append_all_bundles(...) abort " {{{1
-  if &verbose
-    echohl WarningMsg
-    echomsg 'pathogen#runtime_append_all_bundles() will be renamed to pathogen#incubate()'
-    echohl NONE
-  endif
-  return call('pathogen#incubate', a:000)
+  call s:warn('Change pathogen#runtime_append_all_bundles('.string(source_path).') to pathogen#incubate('.string(source_path.'/{}').')')
+  return call('pathogen#incubate', map(copy(a:000, 'v:val . "/{}"'))
 endfunction
 
 let s:done_bundles = ''
