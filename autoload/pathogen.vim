@@ -42,9 +42,9 @@ function! pathogen#infect(...) abort " {{{1
       call s:warn('Change pathogen#infect('.string(path).') to pathogen#infect('.string(path.'/{}').')')
       call pathogen#surround(path . '/{}')
     endif
-    call pathogen#cycle_filetype()
-    return ''
   endfor
+  call pathogen#cycle_filetype()
+  return ''
 endfunction " }}}1
 
 " Split a path into a list.
