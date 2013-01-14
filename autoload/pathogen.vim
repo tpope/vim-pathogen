@@ -30,20 +30,21 @@ endfunction
 " does not end in {} or * is given to pathogen#runtime_prepend_subdirectories()
 " instead.
 function! pathogen#infect(...) abort " {{{1
-  let path = a:0 ? a:1 : 'bundle/{}'
-  if path =~# '^[^\\/]\+$'
-    call s:warn('Change pathogen#infect('.string(path).') to pathogen#infect('.string(path.'/{}').')')
-    call pathogen#incubate(path . '/{}')
-  elseif path =~# '^[^\\/]\+[\\/]\%({}\|\*\)$'
-    call pathogen#incubate(path)
-  elseif path =~# '[\\/]\%({}\|\*\)$'
-    call pathogen#surround(path)
-  else
-    call s:warn('Change pathogen#infect('.string(path).') to pathogen#infect('.string(path.'/{}').')')
-    call pathogen#surround(path . '/{}')
-  endif
-  call pathogen#cycle_filetype()
-  return ''
+  for path in a:0 ? reverse(copy(a:000)) : ['bundle/{}']
+    if path =~# '^[^\\/]\+$'
+      call s:warn('Change pathogen#infect('.string(path).') to pathogen#infect('.string(path.'/{}').')')
+      call pathogen#incubate(path . '/{}')
+    elseif path =~# '^[^\\/]\+[\\/]\%({}\|\*\)$'
+      call pathogen#incubate(path)
+    elseif path =~# '[\\/]\%({}\|\*\)$'
+      call pathogen#surround(path)
+    else
+      call s:warn('Change pathogen#infect('.string(path).') to pathogen#infect('.string(path.'/{}').')')
+      call pathogen#surround(path . '/{}')
+    endif
+    call pathogen#cycle_filetype()
+    return ''
+  endfor
 endfunction " }}}1
 
 " Split a path into a list.
