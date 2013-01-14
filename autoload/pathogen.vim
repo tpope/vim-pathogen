@@ -24,8 +24,8 @@ function! s:warn(msg)
   endif
 endfunction
 
-" Point of entry for basic default usage.  Give a directory name to invoke
-" pathogen#incubate() (defaults to "bundle"), or a full path to invoke
+" Point of entry for basic default usage.  Give a relative path to invoke
+" pathogen#incubate() (defaults to "bundle/{}"), or an absolute path to invoke
 " pathogen#surround().  For backwards compatibility purposes, a full path that
 " does not end in {} or * is given to pathogen#runtime_prepend_subdirectories()
 " instead.
@@ -170,13 +170,15 @@ function! pathogen#runtime_prepend_subdirectories(path) " {{{1
   return pathogen#surround(a:path . pathogen#separator() . '{}')
 endfunction " }}}1
 
-" For each directory in rtp, check for the provided subdirectory.  If it
-" exists, add all subdirectories of that subdirectory to the rtp, immediately
-" after the original directory.  If no argument is given, 'bundle' is used.
-" Repeated calls with the same arguments are ignored.
+" For each directory in the runtime path, add a second entry with the given
+" argument appended.  If the argument ends in '/{}', add a separate entry for
+" each subdirectory.  The default argument is 'bundle/{}', which means that
+" .vim/bundle/*, $VIM/vimfiles/bundle/*, $VIMRUNTIME/bundle/*,
+" $VIM/vim/files/bundle/*/after, and .vim/bundle/*/after will be added (on
+" UNIX).
 function! pathogen#incubate(...) abort " {{{1
   let sep = pathogen#separator()
-  let name = a:0 ? substitute(a:1, '[\\/]{}$', '', '') : 'bundle'
+  let name = a:0 ? a:1 : 'bundle/{}'
   if "\n".s:done_bundles =~# "\\M\n".name."\n"
     return ""
   endif
@@ -184,16 +186,16 @@ function! pathogen#incubate(...) abort " {{{1
   let list = []
   for dir in pathogen#split(&rtp)
     if dir =~# '\<after$'
-      if name =~# '*'
-        let list += [dir, substitute(dir, 'after$', '', '') . name . sep . 'after']
+      if name =~# '{}$'
+        let list +=  filter(pathogen#glob_directories(substitute(dir,'after$',name[0:-3],'').'*[^~]'.sep.'after'), '!pathogen#is_disabled(v:val[0:-7])') + [dir]
       else
-        let list +=  filter(pathogen#glob_directories(substitute(dir,'after$',name,'').sep.'*[^~]'.sep.'after'), '!pathogen#is_disabled(v:val[0:-7])') + [dir]
+        let list += [dir, substitute(dir, 'after$', '', '') . name . sep . 'after']
       endif
     else
-      if name =~# '*'
-        let list += [dir . sep . name, dir]
+      if name =~# '{}$'
+        let list +=  [dir] + filter(pathogen#glob_directories(dir.sep.name[0:-3].'*[^~]'), '!pathogen#is_disabled(v:val)')
       else
-        let list +=  [dir] + filter(pathogen#glob_directories(dir.sep.name.sep.'*[^~]'), '!pathogen#is_disabled(v:val)')
+        let list += [dir . sep . name, dir]
       endif
     endif
   endfor
