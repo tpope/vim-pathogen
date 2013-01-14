@@ -164,7 +164,7 @@ function! pathogen#surround(path) abort " {{{1
 endfunction " }}}1
 
 " Prepend all subdirectories of path to the rtp, and append all 'after'
-" directories in those subdirectories.
+" directories in those subdirectories.  Deprecated.
 function! pathogen#runtime_prepend_subdirectories(path) " {{{1
   call s:warn('Change pathogen#runtime_prepend_subdirectories('.string(source_path).') to pathogen#surround('.string(source_path.'/{}').')')
   return pathogen#surround(a:path . pathogen#separator() . '{}')
