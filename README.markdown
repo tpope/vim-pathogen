@@ -49,7 +49,7 @@ trailing `{}` is supported.
 
 You can also pass an absolute path instead.  I keep the plugins I maintain under `~/src`, and this is how I add them:
 
-    execute pathogen#infect('bundle/{}, '~/src/vim/bundle/{}')
+    execute pathogen#infect('bundle/{}', '~/src/vim/bundle/{}')
 
 Normally to generate documentation, Vim expects you to run `:helptags`
 on each directory with documentation (e.g., `:helptags ~/.vim/doc`).
