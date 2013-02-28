@@ -188,13 +188,13 @@ function! pathogen#incubate(...) abort " {{{1
   for dir in pathogen#split(&rtp)
     if dir =~# '\<after$'
       if name =~# '{}$'
-        let list +=  filter(pathogen#glob_directories(substitute(dir,'after$',name[0:-3],'').'*[^~]'.sep.'after'), '!pathogen#is_disabled(v:val[0:-7])') + [dir]
+        let list +=  filter(pathogen#glob_directories(substitute(dir,'after$',name[0:-3],'').'*'.sep.'after'), '!pathogen#is_disabled(v:val[0:-7])') + [dir]
       else
         let list += [dir, substitute(dir, 'after$', '', '') . name . sep . 'after']
       endif
     else
       if name =~# '{}$'
-        let list +=  [dir] + filter(pathogen#glob_directories(dir.sep.name[0:-3].'*[^~]'), '!pathogen#is_disabled(v:val)')
+        let list +=  [dir] + filter(pathogen#glob_directories(dir.sep.name[0:-3].'*'), '!pathogen#is_disabled(v:val)')
       else
         let list += [dir . sep . name, dir]
       endif
