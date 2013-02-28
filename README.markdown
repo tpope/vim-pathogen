@@ -66,7 +66,7 @@ It's well documented.
 ## Runtime File Editing
 
 `:Vopen`, `:Vedit`, `:Vsplit`, `:Vvsplit`, `:Vtabedit`, `:Vpedit`, and
-`:Vread` have all moved to [scriptease.vim][]
+`:Vread` have all moved to [scriptease.vim][].
 
 [scriptease.vim]: https://github.com/tpope/vim-scriptease
 
