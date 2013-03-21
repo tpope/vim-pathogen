@@ -17,11 +17,9 @@ endif
 let g:loaded_pathogen = 1
 
 function! s:warn(msg)
-  if &verbose
-    echohl WarningMsg
-    echomsg a:msg
-    echohl NONE
-  endif
+  echohl WarningMsg
+  echomsg a:msg
+  echohl NONE
 endfunction
 
 " Point of entry for basic default usage.  Give a relative path to invoke
