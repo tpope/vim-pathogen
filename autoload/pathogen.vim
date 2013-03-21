@@ -223,7 +223,7 @@ function! pathogen#helptags() abort " {{{1
   for glob in pathogen#split(&rtp)
     for dir in split(glob(glob), "\n")
       if (dir.sep)[0 : strlen($VIMRUNTIME)] !=# $VIMRUNTIME.sep && filewritable(dir.sep.'doc') == 2 && !empty(filter(split(glob(dir.sep.'doc'.sep.'*'),"\n>"),'!isdirectory(v:val)')) && (!filereadable(dir.sep.'doc'.sep.'tags') || filewritable(dir.sep.'doc'.sep.'tags'))
-        helptags `=dir.'/doc'`
+        silent! helptags `=dir.'/doc'`
       endif
     endfor
   endfor
