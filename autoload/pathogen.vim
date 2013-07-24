@@ -23,10 +23,9 @@ function! s:warn(msg)
 endfunction
 
 " Point of entry for basic default usage.  Give a relative path to invoke
-" pathogen#incubate() (defaults to "bundle/{}"), or an absolute path to invoke
+" pathogen#incubate() (defaults to 'bundle/{}'), or an absolute path to invoke
 " pathogen#surround().  For backwards compatibility purposes, a full path that
-" does not end in {} or * is given to pathogen#runtime_prepend_subdirectories()
-" instead.
+" does not end in {} or * is given to pathogen#surround().
 function! pathogen#infect(...) abort " {{{1
   " accept generic list as the only argument for this function
   " in a same way as a variable arguments list, to be used like this:
@@ -36,17 +35,15 @@ function! pathogen#infect(...) abort " {{{1
   else
     let l:paths = a:0 ? reverse(copy(a:000)) : ['bundle/{}']
   endif
-  for path in l:paths
-    if path =~# '^[^\\/]\+$'
-      call s:warn('Change pathogen#infect('.string(path).') to pathogen#infect('.string(path.'/{}').')')
-      call pathogen#incubate(path . '/{}')
-    elseif path =~# '^[^\\/]\+[\\/]\%({}\|\*\)$'
-      call pathogen#incubate(path)
-    elseif path =~# '[\\/]\%({}\|\*\)$'
-      call pathogen#surround(path)
+  for l:path in l:paths
+    if l:path !~# '[\\/]\%({}\|\*\)$' " Doesn't end with a mask '/{}' or '/*'
+      call s:warn('Change pathogen#infect('.string(l:path).') to pathogen#infect('.string(l:path.'/{}').')')
+      let l:path = l:path . '/{}'
+    endif
+    if l:path =~# '^[^\\/~]' " Doesn't start from slash or tilde => relative
+      call pathogen#incubate(l:path)
     else
-      call s:warn('Change pathogen#infect('.string(path).') to pathogen#infect('.string(path.'/{}').')')
-      call pathogen#surround(path . '/{}')
+      call pathogen#surround(l:path)
     endif
   endfor
   call pathogen#cycle_filetype()
