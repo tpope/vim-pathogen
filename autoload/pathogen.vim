@@ -28,7 +28,15 @@ endfunction
 " does not end in {} or * is given to pathogen#runtime_prepend_subdirectories()
 " instead.
 function! pathogen#infect(...) abort " {{{1
-  for path in a:0 ? reverse(copy(a:000)) : ['bundle/{}']
+  " accept generic list as the only argument for this function
+  " in a same way as a variable arguments list, to be used like this:
+  " pathogen#infect(['bundle/{}', 'stuff/{}'])
+  if (a:0 == 1 && type(a:000[0]) == type([]))
+    let l:paths = a:000[0]
+  else
+    let l:paths = a:0 ? reverse(copy(a:000)) : ['bundle/{}']
+  endif
+  for path in l:paths
     if path =~# '^[^\\/]\+$'
       call s:warn('Change pathogen#infect('.string(path).') to pathogen#infect('.string(path.'/{}').')')
       call pathogen#incubate(path . '/{}')
