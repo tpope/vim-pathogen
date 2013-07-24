@@ -29,16 +29,14 @@ endfunction
 function! pathogen#infect(...) abort " {{{1
   let result =  {'before' : [], 'after' : []}
   for path in a:0 ? reverse(copy(a:000)) : ['bundle/{}']
-    if path =~# '^[^\\/]\+$'
+    if path !~# '[\\/]\%({}\|\*\)$' " Doesn't end with a mask '/{}' or '/*'
       call s:warn('Change pathogen#infect('.string(path).') to pathogen#infect('.string(path.'/{}').')')
-      let result = pathogen#incubate(path . '/{}')
-    elseif path =~# '^[^\\/]\+[\\/]\%({}\|\*\)$'
+      let path = path . '/{}'
+    endif
+    if path =~# '^[^\\/~]' " Doesn't start from slash or tilde => relative
       let result = pathogen#incubate(path)
-    elseif path =~# '[\\/]\%({}\|\*\)$'
-      let result = pathogen#surround(path)
     else
-      call s:warn('Change pathogen#infect('.string(path).') to pathogen#infect('.string(path.'/{}').')')
-      let result = pathogen#surround(path . '/{}')
+      let result = pathogen#surround(path)
     endif
   endfor
   call pathogen#cycle_filetype()
