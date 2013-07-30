@@ -25,24 +25,24 @@ endfunction
 " Point of entry for basic default usage.  Give a relative path to invoke
 " pathogen#incubate() (defaults to "bundle/{}"), or an absolute path to invoke
 " pathogen#surround().  For backwards compatibility purposes, a full path that
-" does not end in {} or * is given to pathogen#runtime_prepend_subdirectories()
-" instead.
+" does not end in {} or * is given to pathogen#surround().
 function! pathogen#infect(...) abort " {{{1
+  let result =  {'before' : [], 'after' : []}
   for path in a:0 ? reverse(copy(a:000)) : ['bundle/{}']
     if path =~# '^[^\\/]\+$'
       call s:warn('Change pathogen#infect('.string(path).') to pathogen#infect('.string(path.'/{}').')')
-      call pathogen#incubate(path . '/{}')
+      let result = pathogen#incubate(path . '/{}')
     elseif path =~# '^[^\\/]\+[\\/]\%({}\|\*\)$'
-      call pathogen#incubate(path)
+      let result = pathogen#incubate(path)
     elseif path =~# '[\\/]\%({}\|\*\)$'
-      call pathogen#surround(path)
+      let result = pathogen#surround(path)
     else
       call s:warn('Change pathogen#infect('.string(path).') to pathogen#infect('.string(path.'/{}').')')
-      call pathogen#surround(path . '/{}')
+      let result = pathogen#surround(path . '/{}')
     endif
   endfor
   call pathogen#cycle_filetype()
-  return ''
+  return result
 endfunction " }}}1
 
 " Split a path into a list.
@@ -159,14 +159,15 @@ function! pathogen#surround(path) abort " {{{1
     call filter(rtp, 'index(before + after, v:val) == -1')
   endif
   let &rtp = pathogen#join(before, rtp, after)
-  return &rtp
+  return {'before' : before, 'after' : after}
 endfunction " }}}1
 
 " Prepend all subdirectories of path to the rtp, and append all 'after'
 " directories in those subdirectories.  Deprecated.
 function! pathogen#runtime_prepend_subdirectories(path) " {{{1
   call s:warn('Change pathogen#runtime_prepend_subdirectories('.string(a:path).') to pathogen#surround('.string(a:path.'/{}').')')
-  return pathogen#surround(a:path . pathogen#separator() . '{}')
+  call pathogen#surround(a:path . pathogen#separator() . '{}')
+  return &rtp " for backwards compatibility with earlier pathogen#surround() impl
 endfunction " }}}1
 
 " For each directory in the runtime path, add a second entry with the given
@@ -182,24 +183,40 @@ function! pathogen#incubate(...) abort " {{{1
     return ""
   endif
   let s:done_bundles .= name . "\n"
-  let list = []
+  let rtp_list = [] " full list of old and newly added runtimepath entries
+  " newly added entries only
+  let before = []
+  let after  = []
+  " newly added entries for current rtp dir
+  let before_dir = []
+  let after_dir  = []
+
   for dir in pathogen#split(&rtp)
     if dir =~# '\<after$'
       if name =~# '{}$'
-        let list +=  filter(pathogen#glob_directories(substitute(dir,'after$',name[0:-3],'').'*'.sep.'after'), '!pathogen#is_disabled(v:val[0:-7])') + [dir]
+        let after_dir = filter(
+            \ pathogen#glob_directories(
+                \ substitute(dir,'after$',name[0:-3],'').'*'.sep.'after'),
+            \ '!pathogen#is_disabled(v:val[0:-7])')
       else
-        let list += [dir, substitute(dir, 'after$', '', '') . name . sep . 'after']
+        let after_dir = [substitute(dir, 'after$', '', '') . name . sep . 'after']
       endif
+      let rtp_list += [dir] + after_dir
+      let after += after_dir
     else
       if name =~# '{}$'
-        let list +=  [dir] + filter(pathogen#glob_directories(dir.sep.name[0:-3].'*'), '!pathogen#is_disabled(v:val)')
+        let before_dir += filter(
+            \ pathogen#glob_directories(dir.sep.name[0:-3].'*'),
+            \ '!pathogen#is_disabled(v:val)')
       else
-        let list += [dir . sep . name, dir]
+        let before_dir += [dir . sep . name]
       endif
+      let rtp_list += before_dir + [dir]
+      let before += before_dir
     endif
   endfor
-  let &rtp = pathogen#join(pathogen#uniq(list))
-  return 1
+  let &rtp = pathogen#join(pathogen#uniq(rtp_list))
+  return {'before' : pathogen#uniq(before), 'after' : pathogen#uniq(after)}
 endfunction " }}}1
 
 " Deprecated alias for pathogen#incubate().
