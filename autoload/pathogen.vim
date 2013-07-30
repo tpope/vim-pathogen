@@ -213,6 +213,10 @@ function! pathogen#incubate(...) abort " {{{1
       let before += before_dir
     endif
   endfor
+  " fallback to pathogen#surround() if nothing was found in runtimepath
+  if (a:0 && (len(before) == 0) && (len(after) == 0))
+    return pathogen#surround(name)
+  endif
   let &rtp = pathogen#join(pathogen#uniq(rtp_list))
   return {'before' : pathogen#uniq(before), 'after' : pathogen#uniq(after)}
 endfunction " }}}1
