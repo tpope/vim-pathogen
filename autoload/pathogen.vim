@@ -27,20 +27,19 @@ endfunction
 " pathogen#surround().  For backwards compatibility purposes, a full path that
 " does not end in {} or * is given to pathogen#surround().
 function! pathogen#infect(...) abort " {{{1
-  let result =  {'before' : [], 'after' : []}
   for path in a:0 ? reverse(copy(a:000)) : ['bundle/{}']
     if path !~# '[\\/]\%({}\|\*\)$' " Doesn't end with a mask '/{}' or '/*'
       call s:warn('Change pathogen#infect('.string(path).') to pathogen#infect('.string(path.'/{}').')')
       let path = path . '/{}'
     endif
     if path =~# '^[^\\/~]' " Doesn't start from slash or tilde => relative
-      let result = pathogen#incubate(path)
+      call pathogen#incubate(path)
     else
-      let result = pathogen#surround(path)
+      call pathogen#surround(path)
     endif
   endfor
   call pathogen#cycle_filetype()
-  return result
+  return ''
 endfunction " }}}1
 
 " Split a path into a list.
