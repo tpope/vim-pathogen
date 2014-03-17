@@ -107,6 +107,10 @@ function! pathogen#separator() abort " {{{1
   return !exists("+shellslash") || &shellslash ? '/' : '\'
 endfunction " }}}1
 
+function! pathogen#slash() abort " {{{1
+  return pathogen#separator()
+endfunction " }}}1
+
 " Convenience wrapper around glob() which returns a list.
 function! pathogen#glob(pattern) abort " {{{1
   let files = split(glob(a:pattern),"\n")
