@@ -28,7 +28,7 @@ endfunction
 " does not end in {} or * is given to pathogen#runtime_prepend_subdirectories()
 " instead.
 function! pathogen#infect(...) abort " {{{1
-  for path in a:0 ? reverse(copy(a:000)) : ['bundle/{}']
+  for path in a:0 ? filter(reverse(copy(a:000)), 'type(v:val) == type("")') : ['bundle/{}']
     if path =~# '^[^\\/]\+$'
       call s:warn('Change pathogen#infect('.string(path).') to pathogen#infect('.string(path.'/{}').')')
       call pathogen#incubate(path . '/{}')
