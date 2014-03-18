@@ -182,10 +182,10 @@ endfunction " }}}1
 function! pathogen#incubate(...) abort " {{{1
   let sep = pathogen#separator()
   let name = a:0 ? a:1 : 'bundle/{}'
-  if "\n".s:done_bundles =~# "\\M\n".name."\n"
+  if has_key(s:done_bundles, name)
     return ""
   endif
-  let s:done_bundles .= name . "\n"
+  let s:done_bundles[name] = 1
   let list = []
   for dir in pathogen#split(&rtp)
     if dir =~# '\<after$'
@@ -216,7 +216,8 @@ function! pathogen#runtime_append_all_bundles(...) abort " {{{1
   return call('pathogen#incubate', map(copy(a:000),'v:val . "/{}"'))
 endfunction
 
-let s:done_bundles = ''
+let s:done_bundles = {}
+
 " }}}1
 
 " Invoke :helptags on all non-$VIM doc directories in runtimepath.
