@@ -103,6 +103,14 @@ If you really must use one:
     :!mkdir ~/.vim/bundle/name
     :UseVimball ~/.vim/bundle/name
 
+> Why don't my plugins load when I use Vim sessions?
+
+Vim sessions default to capturing all global options, which includes the
+`'runtimepath'` that pathogen.vim manipulates.  This can cause other problems
+too, so I recommend turning that behavior off:
+
+    set sessionoptions-=options
+
 ## Contributing
 
 If your [commit message sucks](http://stopwritingramblingcommitmessages.com/),
