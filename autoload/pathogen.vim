@@ -224,9 +224,9 @@ let s:done_bundles = {}
 function! pathogen#helptags() abort " {{{1
   let sep = pathogen#separator()
   for glob in pathogen#split(&rtp)
-    for dir in split(glob(glob), "\n")
-      if (dir.sep)[0 : strlen($VIMRUNTIME)] !=# $VIMRUNTIME.sep && filewritable(dir.sep.'doc') == 2 && !empty(filter(split(glob(dir.sep.'doc'.sep.'*'),"\n>"),'!isdirectory(v:val)')) && (!filereadable(dir.sep.'doc'.sep.'tags') || filewritable(dir.sep.'doc'.sep.'tags'))
-        silent! execute 'helptags' pathogen#fnameescape(dir.'/doc')
+    for dir in map(split(glob(glob), "\n"), 'v:val.sep."/doc/".sep')
+      if (dir)[0 : strlen($VIMRUNTIME)] !=# $VIMRUNTIME.sep && filewritable(dir) == 2 && !empty(split(glob(dir.'*.txt'))) && (!filereadable(dir.'tags') || filewritable(dir.'tags'))
+        silent! execute 'helptags' pathogen#fnameescape(dir)
       endif
     endfor
   endfor
