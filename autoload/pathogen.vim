@@ -177,7 +177,7 @@ endfunction " }}}1
 " argument appended.  If the argument ends in '/{}', add a separate entry for
 " each subdirectory.  The default argument is 'bundle/{}', which means that
 " .vim/bundle/*, $VIM/vimfiles/bundle/*, $VIMRUNTIME/bundle/*,
-" $VIM/vim/files/bundle/*/after, and .vim/bundle/*/after will be added (on
+" $VIM/vimfiles/bundle/*/after, and .vim/bundle/*/after will be added (on
 " UNIX).
 function! pathogen#incubate(...) abort " {{{1
   let sep = pathogen#separator()
