@@ -130,13 +130,10 @@ function! pathogen#cycle_filetype() " {{{1
   endif
 endfunction " }}}1
 
-" Check if a bundle is disabled.  A bundle is considered disabled if it ends
-" in a tilde or its basename or full name is included in the list
-" g:pathogen_disabled.
-function! pathogen#is_disabled(path) " {{{1
-  if a:path =~# '\~$'
-    return 1
-  elseif !exists("g:pathogen_disabled")
+" Check if a bundle is disabled.  A bundle is considered disabled if its
+" basename or full name is included in the list g:pathogen_disabled.
+function! pathogen#is_disabled(path) abort " {{{1
+  if !exists("g:pathogen_disabled")
     return 0
   endif
   let sep = pathogen#separator()
