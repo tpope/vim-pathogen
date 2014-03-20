@@ -163,7 +163,7 @@ endfunction " }}}1
 " Prepend all subdirectories of path to the rtp, and append all 'after'
 " directories in those subdirectories.  Deprecated.
 function! pathogen#runtime_prepend_subdirectories(path) " {{{1
-  call s:warn('Change pathogen#runtime_prepend_subdirectories('.string(a:path).') to pathogen#surround('.string(a:path.'/{}').')')
+  call s:warn('Change pathogen#runtime_prepend_subdirectories('.string(a:path).') to pathogen#infect('.string(a:path.'/{}').')')
   return pathogen#surround(a:path . pathogen#slash() . '{}')
 endfunction " }}}1
 
@@ -206,9 +206,9 @@ endfunction " }}}1
 " Deprecated alias for pathogen#interpose().
 function! pathogen#runtime_append_all_bundles(...) abort " {{{1
   if a:0
-    call s:warn('Change pathogen#runtime_append_all_bundles('.string(a:1).') to pathogen#interpose('.string(a:1.'/{}').')')
+    call s:warn('Change pathogen#runtime_append_all_bundles('.string(a:1).') to pathogen#infect('.string(a:1.'/{}').')')
   else
-    call s:warn('Change pathogen#runtime_append_all_bundles() to pathogen#interpose()')
+    call s:warn('Change pathogen#runtime_append_all_bundles() to pathogen#infect()')
   endif
   return call('pathogen#interpose', map(copy(a:000),'v:val . "/{}"'))
 endfunction
