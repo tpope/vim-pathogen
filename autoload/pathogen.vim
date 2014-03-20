@@ -133,12 +133,9 @@ endfunction " }}}1
 " Check if a bundle is disabled.  A bundle is considered disabled if its
 " basename or full name is included in the list g:pathogen_disabled.
 function! pathogen#is_disabled(path) abort " {{{1
-  if !exists("g:pathogen_disabled")
-    return 0
-  endif
   let sep = pathogen#separator()
-  let blacklist = g:pathogen_disabled
-  return index(blacklist, strpart(a:path, strridx(a:path, sep)+1)) != -1 && index(blacklist, a:path) != 1
+  let blacklist = get(g:, 'pathogen_blacklist', get(g:, 'pathogen_disabled', []))
+  return index(blacklist, fnamemodify(a:path, ':t')) != -1 || index(blacklist, a:path) != -1
 endfunction "}}}1
 
 " Prepend the given directory to the runtime path and append its corresponding
