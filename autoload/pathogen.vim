@@ -199,7 +199,7 @@ endfunction " }}}1
 
 function! pathogen#incubate(...) abort " {{{1
   let name = a:0 ? a:1 : 'bundle/{}'
-  call s:warn('Change pathogen#incubate('.(a:0 ? string(a:1) : '').') to pathogen#interpose('.string(name).')')
+  call s:warn('Change pathogen#incubate('.(a:0 ? string(a:1) : '').') to pathogen#infect('.string(name).')')
   return pathogen#interpose(name)
 endfunction " }}}1
 
