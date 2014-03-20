@@ -206,6 +206,10 @@ function! pathogen#incubate(...) abort " {{{1
   return 1
 endfunction " }}}1
 
+function! pathogen#interpose(path) abort " {{{1
+  return pathogen#incubate(a:path)
+endfunction " }}}1
+
 " Deprecated alias for pathogen#incubate().
 function! pathogen#runtime_append_all_bundles(...) abort " {{{1
   if a:0
