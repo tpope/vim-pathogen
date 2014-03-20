@@ -210,7 +210,7 @@ function! pathogen#runtime_append_all_bundles(...) abort " {{{1
   else
     call s:warn('Change pathogen#runtime_append_all_bundles() to pathogen#infect()')
   endif
-  return call('pathogen#interpose', map(copy(a:000),'v:val . "/{}"'))
+  return pathogen#interpose(a:0 ? a:1 . '/{}' : 'bundle/{}')
 endfunction
 
 let s:done_bundles = {}
