@@ -78,24 +78,6 @@ function! pathogen#legacyjoin(...) abort " {{{1
   return call('pathogen#join',[1] + a:000)
 endfunction " }}}1
 
-" Remove duplicates from a list.
-function! pathogen#uniq(list) abort " {{{1
-  let i = 0
-  let seen = {}
-  while i < len(a:list)
-    if (a:list[i] ==# '' && exists('empty')) || has_key(seen,a:list[i])
-      call remove(a:list,i)
-    elseif a:list[i] ==# ''
-      let i += 1
-      let empty = 1
-    else
-      let seen[a:list[i]] = 1
-      let i += 1
-    endif
-  endwhile
-  return a:list
-endfunction " }}}1
-
 " Turn filetype detection off and back on again if it was already enabled.
 function! pathogen#cycle_filetype() " {{{1
   if exists('g:did_load_filetypes')
@@ -211,6 +193,24 @@ endfunction "}}}1
 function! pathogen#glob_directories(pattern) abort " {{{1
   return filter(pathogen#glob(a:pattern),'isdirectory(v:val)')
 endfunction "}}}1
+
+" Remove duplicates from a list.
+function! pathogen#uniq(list) abort " {{{1
+  let i = 0
+  let seen = {}
+  while i < len(a:list)
+    if (a:list[i] ==# '' && exists('empty')) || has_key(seen,a:list[i])
+      call remove(a:list,i)
+    elseif a:list[i] ==# ''
+      let i += 1
+      let empty = 1
+    else
+      let seen[a:list[i]] = 1
+      let i += 1
+    endif
+  endwhile
+  return a:list
+endfunction " }}}1
 
 " Backport of fnameescape().
 function! pathogen#fnameescape(string) abort " {{{1
