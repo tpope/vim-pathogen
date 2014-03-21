@@ -16,12 +16,6 @@ if exists("g:loaded_pathogen") || &cp
 endif
 let g:loaded_pathogen = 1
 
-function! s:warn(msg)
-  echohl WarningMsg
-  echomsg a:msg
-  echohl NONE
-endfunction
-
 " Point of entry for basic default usage.  Give a relative path to invoke
 " pathogen#interpose() (defaults to "bundle/{}"), or an absolute path to invoke
 " pathogen#surround().  For backwards compatibility purposes, a full path that
@@ -241,6 +235,12 @@ function! pathogen#runtime_findfile(file,count) abort "{{{1
 endfunction " }}}1
 
 " Section: Deprecated
+
+function! s:warn(msg)
+  echohl WarningMsg
+  echomsg a:msg
+  echohl NONE
+endfunction
 
 " Prepend all subdirectories of path to the rtp, and append all 'after'
 " directories in those subdirectories.  Deprecated.
