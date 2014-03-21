@@ -102,26 +102,6 @@ function! pathogen#uniq(list) abort " {{{1
   return a:list
 endfunction " }}}1
 
-" \ on Windows unless shellslash is set, / everywhere else.
-function! pathogen#slash() abort " {{{1
-  return !exists("+shellslash") || &shellslash ? '/' : '\'
-endfunction " }}}1
-
-function! pathogen#separator() abort " {{{1
-  return pathogen#slash()
-endfunction " }}}1
-
-" Convenience wrapper around glob() which returns a list.
-function! pathogen#glob(pattern) abort " {{{1
-  let files = split(glob(a:pattern),"\n")
-  return map(files,'substitute(v:val,"[".pathogen#slash()."/]$","","")')
-endfunction "}}}1
-
-" Like pathogen#glob(), only limit the results to directories.
-function! pathogen#glob_directories(pattern) abort " {{{1
-  return filter(pathogen#glob(a:pattern),'isdirectory(v:val)')
-endfunction "}}}1
-
 " Turn filetype detection off and back on again if it was already enabled.
 function! pathogen#cycle_filetype() " {{{1
   if exists('g:did_load_filetypes')
@@ -160,13 +140,6 @@ function! pathogen#surround(path) abort " {{{1
   return &rtp
 endfunction " }}}1
 
-" Prepend all subdirectories of path to the rtp, and append all 'after'
-" directories in those subdirectories.  Deprecated.
-function! pathogen#runtime_prepend_subdirectories(path) " {{{1
-  call s:warn('Change pathogen#runtime_prepend_subdirectories('.string(a:path).') to pathogen#infect('.string(a:path.'/{}').')')
-  return pathogen#surround(a:path . pathogen#slash() . '{}')
-endfunction " }}}1
-
 " For each directory in the runtime path, add a second entry with the given
 " argument appended.  If the argument ends in '/{}', add a separate entry for
 " each subdirectory.
@@ -195,22 +168,6 @@ function! pathogen#interpose(name) abort " {{{1
   endfor
   let &rtp = pathogen#join(pathogen#uniq(list))
   return 1
-endfunction " }}}1
-
-function! pathogen#incubate(...) abort " {{{1
-  let name = a:0 ? a:1 : 'bundle/{}'
-  call s:warn('Change pathogen#incubate('.(a:0 ? string(a:1) : '').') to pathogen#infect('.string(name).')')
-  return pathogen#interpose(name)
-endfunction " }}}1
-
-" Deprecated alias for pathogen#interpose().
-function! pathogen#runtime_append_all_bundles(...) abort " {{{1
-  if a:0
-    call s:warn('Change pathogen#runtime_append_all_bundles('.string(a:1).') to pathogen#infect('.string(a:1.'/{}').')')
-  else
-    call s:warn('Change pathogen#runtime_append_all_bundles() to pathogen#infect()')
-  endif
-  return pathogen#interpose(a:0 ? a:1 . '/{}' : 'bundle/{}')
 endfunction
 
 let s:done_bundles = {}
@@ -239,6 +196,39 @@ function! pathogen#execute(...) abort " {{{1
   return ''
 endfunction " }}}1
 
+" Section: Unofficial
+
+" \ on Windows unless shellslash is set, / everywhere else.
+function! pathogen#slash() abort " {{{1
+  return !exists("+shellslash") || &shellslash ? '/' : '\'
+endfunction " }}}1
+
+function! pathogen#separator() abort " {{{1
+  return pathogen#slash()
+endfunction " }}}1
+
+" Convenience wrapper around glob() which returns a list.
+function! pathogen#glob(pattern) abort " {{{1
+  let files = split(glob(a:pattern),"\n")
+  return map(files,'substitute(v:val,"[".pathogen#slash()."/]$","","")')
+endfunction "}}}1
+
+" Like pathogen#glob(), only limit the results to directories.
+function! pathogen#glob_directories(pattern) abort " {{{1
+  return filter(pathogen#glob(a:pattern),'isdirectory(v:val)')
+endfunction "}}}1
+
+" Backport of fnameescape().
+function! pathogen#fnameescape(string) abort " {{{1
+  if exists('*fnameescape')
+    return fnameescape(a:string)
+  elseif a:string ==# '-'
+    return '\-'
+  else
+    return substitute(escape(a:string," \t\n*?[{`$\\%#'\"|!<"),'^[+>]','\\&','')
+  endif
+endfunction " }}}1
+
 " Like findfile(), but hardcoded to use the runtimepath.
 function! pathogen#runtime_findfile(file,count) abort "{{{1
   let rtp = pathogen#join(1,pathogen#split(&rtp))
@@ -250,15 +240,29 @@ function! pathogen#runtime_findfile(file,count) abort "{{{1
   endif
 endfunction " }}}1
 
-" Backport of fnameescape().
-function! pathogen#fnameescape(string) abort " {{{1
-  if exists('*fnameescape')
-    return fnameescape(a:string)
-  elseif a:string ==# '-'
-    return '\-'
+" Section: Deprecated
+
+" Prepend all subdirectories of path to the rtp, and append all 'after'
+" directories in those subdirectories.  Deprecated.
+function! pathogen#runtime_prepend_subdirectories(path) " {{{1
+  call s:warn('Change pathogen#runtime_prepend_subdirectories('.string(a:path).') to pathogen#infect('.string(a:path.'/{}').')')
+  return pathogen#surround(a:path . pathogen#slash() . '{}')
+endfunction " }}}1
+
+function! pathogen#incubate(...) abort " {{{1
+  let name = a:0 ? a:1 : 'bundle/{}'
+  call s:warn('Change pathogen#incubate('.(a:0 ? string(a:1) : '').') to pathogen#infect('.string(name).')')
+  return pathogen#interpose(name)
+endfunction " }}}1
+
+" Deprecated alias for pathogen#interpose().
+function! pathogen#runtime_append_all_bundles(...) abort " {{{1
+  if a:0
+    call s:warn('Change pathogen#runtime_append_all_bundles('.string(a:1).') to pathogen#infect('.string(a:1.'/{}').')')
   else
-    return substitute(escape(a:string," \t\n*?[{`$\\%#'\"|!<"),'^[+>]','\\&','')
+    call s:warn('Change pathogen#runtime_append_all_bundles() to pathogen#infect()')
   endif
+  return pathogen#interpose(a:0 ? a:1 . '/{}' : 'bundle/{}')
 endfunction " }}}1
 
 if exists(':Vedit')
