@@ -35,6 +35,9 @@ function! pathogen#infect(...) abort
     endif
   endfor
   call pathogen#cycle_filetype()
+  if pathogen#is_disabled($MYVIMRC)
+    return 'finish'
+  endif
   return ''
 endfunction
 
