@@ -92,7 +92,7 @@ endfunction
 " basename or full name is included in the list g:pathogen_disabled.
 function! pathogen#is_disabled(path) abort
   let sep = pathogen#slash()
-  let blacklist = get(g:, 'pathogen_blacklist', get(g:, 'pathogen_disabled', []))
+  let blacklist = get(g:, 'pathogen_blacklist', get(g:, 'pathogen_disabled', [])) + pathogen#split($VIMBLACKLIST)
   return index(blacklist, fnamemodify(a:path, ':t')) != -1 || index(blacklist, a:path) != -1
 endfunction "}}}1
 
