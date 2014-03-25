@@ -91,6 +91,9 @@ endfunction
 " Check if a bundle is disabled.  A bundle is considered disabled if its
 " basename or full name is included in the list g:pathogen_disabled.
 function! pathogen#is_disabled(path) abort
+  if a:path =~# '\~$'
+    return 1
+  endif
   let sep = pathogen#slash()
   let blacklist = get(g:, 'pathogen_blacklist', get(g:, 'pathogen_disabled', [])) + pathogen#split($VIMBLACKLIST)
   return index(blacklist, fnamemodify(a:path, ':t')) != -1 || index(blacklist, a:path) != -1
