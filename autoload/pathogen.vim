@@ -44,6 +44,7 @@ endfunction
 " Split a path into a list.
 function! pathogen#split(path) abort
   if type(a:path) == type([]) | return a:path | endif
+  if empty(a:path) | return [] | endif
   let split = split(a:path,'\\\@<!\%(\\\\\)*\zs,')
   return map(split,'substitute(v:val,''\\\([\\,]\)'',''\1'',"g")')
 endfunction
