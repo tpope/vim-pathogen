@@ -140,9 +140,16 @@ let s:done_bundles = {}
 function! pathogen#helptags() abort
   let sep = pathogen#slash()
   for glob in pathogen#split(&rtp)
-    for dir in map(split(glob(glob), "\n"), 'v:val.sep."/doc/".sep')
-      if (dir)[0 : strlen($VIMRUNTIME)] !=# $VIMRUNTIME.sep && filewritable(dir) == 2 && !empty(split(glob(dir.'*.txt'))) && (!filereadable(dir.'tags') || filewritable(dir.'tags'))
+    for dir in map(split(glob(glob), "\n"), 'v:val.sep."doc".sep')
+      if (dir)[0 : strlen($VIMRUNTIME)] ==# $VIMRUNTIME.sep || filewritable(dir) != 2
+        continue
+      elseif !empty(split(glob(dir.'*.txt'))) && (!filereadable(dir.'tags') || filewritable(dir.'tags'))
         silent! execute 'helptags' pathogen#fnameescape(dir)
+      elseif has('multi_lang') && !empty(split(glob(dir.'*.??x')))
+        let list = split(glob(dir.'tags-??'), "\n")
+        if empty(list) || min(map(list, 'filewritable(v:val)'))
+          silent! execute 'helptags' pathogen#fnameescape(dir)
+        endif
       endif
     endfor
   endfor
