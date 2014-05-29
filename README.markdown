@@ -8,7 +8,7 @@ private directories.
 
 Install to `~/.vim/autoload/pathogen.vim`.  Or copy and paste:
 
-    mkdir -p ~/.vim/autoload ~/.vim/bundle; \
+    mkdir -p ~/.vim/autoload ~/.vim/bundle && \
     curl -LSso ~/.vim/autoload/pathogen.vim https://tpo.pe/pathogen.vim
 
 If you're using Windows, change all occurrences of `~/.vim` to `~\vimfiles`.
@@ -30,7 +30,7 @@ Now any plugins you wish to install can be extracted to a subdirectory
 under `~/.vim/bundle`, and they will be added to the `'runtimepath'`.
 Observe:
 
-    cd ~/.vim/bundle
+    cd ~/.vim/bundle && \
     git clone git://github.com/tpope/vim-sensible.git
 
 Now [sensible.vim](https://github.com/tpope/vim-sensible) is installed.
