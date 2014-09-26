@@ -127,6 +127,7 @@ function! pathogen#interpose(name) abort
   let s:done_bundles[name] = 1
   let list = []
   for dir in pathogen#split(&rtp)
+    let dir = substitute(dir, '^\\', '\\\\', '')
     if dir =~# '\<after$'
       let list += reverse(filter(pathogen#expand(dir[0:-6].name.sep.'after'), '!pathogen#is_disabled(v:val[0:-7])')) + [dir]
     else
@@ -134,6 +135,7 @@ function! pathogen#interpose(name) abort
     endif
   endfor
   let &rtp = pathogen#join(pathogen#uniq(list))
+  let &rtp = substitute(&rtp, '\\\\\\', '\\\\', 'g')
   return 1
 endfunction
 
