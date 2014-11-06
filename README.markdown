@@ -43,8 +43,7 @@ glob as an argument:
 
     execute pathogen#infect('stuff/{}')
 
-The `{}` indicates where the expansion should occur.  Currently only a
-trailing `{}` is supported.
+The `{}` indicates where the expansion should occur.
 
 You can also pass an absolute path instead.  I keep the plugins I maintain under `~/src`, and this is how I add them:
 
