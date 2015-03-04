@@ -90,9 +90,10 @@ function! pathogen#cycle_filetype() abort
 endfunction
 
 " Check if a bundle is disabled.  A bundle is considered disabled if its
-" basename or full name is included in the list g:pathogen_disabled.
+" basename or full name is included in the list g:pathogen_disabled, or if the
+" full name matches the pattern at g:pathogen_blacklist_pattern.
 function! pathogen#is_disabled(path) abort
-  if a:path =~# '\~$'
+  if a:path =~# get(g:, 'pathogen_blacklist_pattern', '\~$')
     return 1
   endif
   let sep = pathogen#slash()
