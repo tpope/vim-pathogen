@@ -23,6 +23,7 @@ If you're brand new to Vim and lacking a vimrc, `vim ~/.vimrc` and paste
 in the following super-minimal example:
 
     execute pathogen#infect()
+    Helptags
     syntax on
     filetype plugin indent on
 
