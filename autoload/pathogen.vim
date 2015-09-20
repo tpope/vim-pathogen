@@ -108,7 +108,7 @@ endfunction "}}}1
 function! pathogen#surround(path) abort
   let sep = pathogen#slash()
   let rtp = pathogen#split(&rtp)
-  let path = fnamemodify(a:path, ':p:?[\\/]\=$??')
+  let path = fnamemodify(a:path, ':p:s?[\\/]\=$??')
   let before = filter(pathogen#expand(path), '!pathogen#is_disabled(v:val)')
   let after = filter(reverse(pathogen#expand(path.sep.'after')), '!pathogen#is_disabled(v:val[0:-7])')
   call filter(rtp, 'index(before + after, v:val) == -1')
