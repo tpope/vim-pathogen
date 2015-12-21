@@ -110,7 +110,7 @@ function! pathogen#surround(path) abort
   let rtp = pathogen#split(&rtp)
   let path = fnamemodify(a:path, ':p:s?[\\/]\=$??')
   let before = filter(pathogen#expand(path), '!pathogen#is_disabled(v:val)')
-  let after = filter(reverse(pathogen#expand(path.sep.'after')), '!pathogen#is_disabled(v:val[0:-7])')
+  let after = filter(reverse(pathogen#expand(path, sep.'after')), '!pathogen#is_disabled(v:val[0:-7])')
   call filter(rtp, 'index(before + after, v:val) == -1')
   let &rtp = pathogen#join(before, rtp, after)
   return &rtp
@@ -128,7 +128,7 @@ function! pathogen#interpose(name) abort
   let list = []
   for dir in pathogen#split(&rtp)
     if dir =~# '\<after$'
-      let list += reverse(filter(pathogen#expand(dir[0:-6].name.sep.'after'), '!pathogen#is_disabled(v:val[0:-7])')) + [dir]
+      let list += reverse(filter(pathogen#expand(dir[0:-6].name, sep.'after'), '!pathogen#is_disabled(v:val[0:-7])')) + [dir]
     else
       let list += [dir] + filter(pathogen#expand(dir.sep.name), '!pathogen#is_disabled(v:val)')
     endif
@@ -171,22 +171,23 @@ endfunction
 " alternatives of that string.  pathogen#expand('/{a,b}/{c,d}') yields
 " ['/a/c', '/a/d', '/b/c', '/b/d'].  Empty braces are treated as a wildcard
 " and globbed.  Actual globs are preserved.
-function! pathogen#expand(pattern) abort
+function! pathogen#expand(pattern, ...) abort
+  let after = a:0 ? a:1 : ''
   if a:pattern =~# '{[^{}]\+}'
     let [pre, pat, post] = split(substitute(a:pattern, '\(.\{-\}\){\([^{}]\+\)}\(.*\)', "\\1\001\\2\001\\3", ''), "\001", 1)
     let found = map(split(pat, ',', 1), 'pre.v:val.post')
     let results = []
     for pattern in found
-      call extend(results, pathogen#expand(pattern))
+      call extend(results, call('pathogen#expand', [pattern] + a:000))
     endfor
-    return results
   elseif a:pattern =~# '{}'
-    let pat = matchstr(a:pattern, '^.*{}[^*]*\%($\|[\\/]\)')
-    let post = a:pattern[strlen(pat) : -1]
-    return map(split(glob(substitute(pat, '{}', '*', 'g')), "\n"), 'v:val.post')
+    let pat = matchstr(a:pattern.after, '^.*{}[^*]*\%($\|[\\/]\)')
+    let post = (a:pattern.after)[strlen(pat) : -1]
+    let results = map(split(glob(substitute(pat, '{}', '*', 'g')), "\n"), 'v:val.post')
   else
-    return [a:pattern]
+    let results = [a:pattern.after]
   endif
+  return results
 endfunction
 
 " \ on Windows unless shellslash is set, / everywhere else.
