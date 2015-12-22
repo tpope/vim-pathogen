@@ -181,7 +181,7 @@ function! pathogen#expand(pattern, ...) abort
       call extend(results, pathogen#expand(pattern))
     endfor
   elseif a:pattern =~# '{}'
-    let pat = matchstr(a:pattern.after, '^.*{}[^*]*\%($\|[\\/]\)')
+    let pat = matchstr(a:pattern, '^.*{}[^*]*\%($\|[\\/]\)')
     let post = a:pattern[strlen(pat) : -1]
     let results = map(split(glob(substitute(pat, '{}', '*', 'g')), "\n"), 'v:val.post')
   else
