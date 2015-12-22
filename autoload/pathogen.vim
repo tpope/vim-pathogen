@@ -101,7 +101,7 @@ function! pathogen#is_disabled(path) abort
         \ pathogen#split($VIMBLACKLIST),
         \ 'substitute(v:val, "[\\/]$", "", "")')
   return index(blacklist, fnamemodify(a:path, ':t')) != -1 || index(blacklist, a:path) != -1
-endfunction "}}}1
+endfunction
 
 " Prepend the given directory to the runtime path and append its corresponding
 " after directory.  Curly braces are expanded with pathogen#expand().
@@ -205,12 +205,12 @@ endfunction
 function! pathogen#glob(pattern) abort
   let files = split(glob(a:pattern),"\n")
   return map(files,'substitute(v:val,"[".pathogen#slash()."/]$","","")')
-endfunction "}}}1
+endfunction
 
 " Like pathogen#glob(), only limit the results to directories.
 function! pathogen#glob_directories(pattern) abort
   return filter(pathogen#glob(a:pattern),'isdirectory(v:val)')
-endfunction "}}}1
+endfunction
 
 " Remove duplicates from a list.
 function! pathogen#uniq(list) abort
@@ -242,7 +242,7 @@ function! pathogen#fnameescape(string) abort
 endfunction
 
 " Like findfile(), but hardcoded to use the runtimepath.
-function! pathogen#runtime_findfile(file,count) abort "{{{1
+function! pathogen#runtime_findfile(file,count) abort
   let rtp = pathogen#join(1,pathogen#split(&rtp))
   let file = findfile(a:file,rtp,a:count)
   if file ==# ''
