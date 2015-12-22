@@ -178,16 +178,18 @@ function! pathogen#expand(pattern, ...) abort
     let found = map(split(pat, ',', 1), 'pre.v:val.post')
     let results = []
     for pattern in found
-      call extend(results, call('pathogen#expand', [pattern] + a:000))
+      call extend(results, pathogen#expand(pattern))
     endfor
   elseif a:pattern =~# '{}'
     let pat = matchstr(a:pattern.after, '^.*{}[^*]*\%($\|[\\/]\)')
-    let post = (a:pattern.after)[strlen(pat) : -1]
+    let post = a:pattern[strlen(pat) : -1]
     let results = map(split(glob(substitute(pat, '{}', '*', 'g')), "\n"), 'v:val.post')
   else
-    let results = [a:pattern.after]
+    let results = [a:pattern]
   endif
-  return results
+  let vf = pathogen#slash() . 'vimfiles'
+  call map(results, 'v:val =~# "\\*" ? v:val.after : isdirectory(v:val.vf.after) ? v:val.vf.after : isdirectory(v:val.after) ? v:val.after : ""')
+  return filter(results, '!empty(v:val)')
 endfunction
 
 " \ on Windows unless shellslash is set, / everywhere else.
