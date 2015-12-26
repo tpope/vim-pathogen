@@ -90,7 +90,8 @@ function! pathogen#cycle_filetype() abort
 endfunction
 
 " Check if a bundle is disabled.  A bundle is considered disabled if its
-" basename or full name is included in the list g:pathogen_disabled.
+" basename or full name is included in the list g:pathogen_blacklist or the
+" comma delimited environment variable $VIMBLACKLIST.
 function! pathogen#is_disabled(path) abort
   if a:path =~# '\~$'
     return 1
