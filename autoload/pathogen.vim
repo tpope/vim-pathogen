@@ -31,12 +31,12 @@ function! pathogen#infect(...) abort
     endif
   endif
   for path in paths
-    if path =~# '^\%({\=[$~\\/]\|{\=\w:[\\/]\).*[{}*]'
+    if path =~# '^\%({\=[$~\\/]\|{\=\w:[\\/]\).*\%([{}*]\|[\\/]$\)'
       call pathogen#surround(path)
     elseif path =~# '^\%([$~\\/]\|\w:[\\/]\)'
       call s:warn('Change pathogen#infect('.string(path).') to pathogen#infect('.string(path.'/{}').')')
       call pathogen#surround(path . '/{}')
-    elseif path =~# '[{}*]'
+    elseif path =~# '[{}*]\|[\\/]$'
       call pathogen#interpose(path)
     else
       call s:warn('Change pathogen#infect('.string(path).') to pathogen#infect('.string(path.'/{}').')')
