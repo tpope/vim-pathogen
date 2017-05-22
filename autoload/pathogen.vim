@@ -185,19 +185,20 @@ endfunction
 " and globbed.  Actual globs are preserved.
 function! pathogen#expand(pattern, ...) abort
   let after = a:0 ? a:1 : ''
-  if a:pattern =~# '{[^{}]\+}'
-    let [pre, pat, post] = split(substitute(a:pattern, '\(.\{-\}\){\([^{}]\+\)}\(.*\)', "\\1\001\\2\001\\3", ''), "\001", 1)
+  let pattern = substitute(a:pattern, '^[~$][^\/]*', '\=expand(submatch(0))', '')
+  if pattern =~# '{[^{}]\+}'
+    let [pre, pat, post] = split(substitute(pattern, '\(.\{-\}\){\([^{}]\+\)}\(.*\)', "\\1\001\\2\001\\3", ''), "\001", 1)
     let found = map(split(pat, ',', 1), 'pre.v:val.post')
     let results = []
     for pattern in found
       call extend(results, pathogen#expand(pattern))
     endfor
-  elseif a:pattern =~# '{}'
-    let pat = matchstr(a:pattern, '^.*{}[^*]*\%($\|[\\/]\)')
-    let post = a:pattern[strlen(pat) : -1]
+  elseif pattern =~# '{}'
+    let pat = matchstr(pattern, '^.*{}[^*]*\%($\|[\\/]\)')
+    let post = pattern[strlen(pat) : -1]
     let results = map(split(glob(substitute(pat, '{}', '*', 'g')), "\n"), 'v:val.post')
   else
-    let results = [a:pattern]
+    let results = [pattern]
   endif
   let vf = pathogen#slash() . 'vimfiles'
   call map(results, 'v:val =~# "\\*" ? v:val.after : isdirectory(v:val.vf.after) ? v:val.vf.after : isdirectory(v:val.after) ? v:val.after : ""')
