@@ -16,12 +16,21 @@ endif
 let g:loaded_pathogen = 1
 
 " Point of entry for basic default usage.  Give a relative path to invoke
-" pathogen#interpose() (defaults to "bundle/{}"), or an absolute path to invoke
-" pathogen#surround().  Curly braces are expanded with pathogen#expand():
-" "bundle/{}" finds all subdirectories inside "bundle" inside all directories
-" in the runtime path.
+" pathogen#interpose() or an absolute path to invoke pathogen#surround().
+" Curly braces are expanded with pathogen#expand(): "bundle/{}" finds all
+" subdirectories inside "bundle" inside all directories in the runtime path.
+" If no arguments are given, defaults "bundle/{}", and also "pack/{}/start/{}"
+" on versions of Vim without native package support.
 function! pathogen#infect(...) abort
-  for path in a:0 ? filter(reverse(copy(a:000)), 'type(v:val) == type("")') : ['bundle/{}']
+  if a:0
+    let paths = filter(reverse(copy(a:000)), 'type(v:val) == type("")')
+  else
+    let paths = ['bundle/{}']
+    if !has('packages')
+      call add(paths, 'pack/{}/start/{}')
+    endif
+  endif
+  for path in paths
     if path =~# '^\%({\=[$~\\/]\|{\=\w:[\\/]\).*[{}*]'
       call pathogen#surround(path)
     elseif path =~# '^\%([$~\\/]\|\w:[\\/]\)'
