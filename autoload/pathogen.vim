@@ -25,10 +25,10 @@ function! pathogen#infect(...) abort
   if a:0
     let paths = filter(reverse(copy(a:000)), 'type(v:val) == type("")')
   else
-    let paths = ['bundle/{}']
-    if !has('packages')
-      call add(paths, 'pack/{}/start/{}')
-    endif
+    let paths = ['bundle/{}', 'pack/{}/start/{}']
+  endif
+  if has('packages')
+    call filter(paths, 'v:val !~# "^pack/[^/]*/start/[^/]*$"')
   endif
   let static = '^\%([$~\\/]\|\w:[\\/]\)[^{}*]*[\/]$'
   for path in filter(copy(paths), 'v:val =~# static')
