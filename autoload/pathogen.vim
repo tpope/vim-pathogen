@@ -30,7 +30,11 @@ function! pathogen#infect(...) abort
       call add(paths, 'pack/{}/start/{}')
     endif
   endif
-  for path in paths
+  let static = '^\%([$~\\/]\|\w:[\\/]\)[^{}*]*[\/]$'
+  for path in filter(copy(paths), 'v:val =~# static')
+    call pathogen#surround(path)
+  endfor
+  for path in filter(copy(paths), 'v:val !~# static')
     if path =~# '^\%({\=[$~\\/]\|{\=\w:[\\/]\).*\%([{}*]\|[\\/]$\)'
       call pathogen#surround(path)
     elseif path =~# '^\%([$~\\/]\|\w:[\\/]\)'
