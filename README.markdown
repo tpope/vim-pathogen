@@ -62,6 +62,14 @@ and other comma-delimited path options in ways most people will never
 need to do.  If you're one of those edge cases, look at the source.
 It's well documented.
 
+## Native Vim Package Management
+
+Vim 8 includes support for package management in a manner similar to
+pathogen.vim.  If you'd like to transition to this native support,
+pathogen.vim can help.  Calling `pathogen#infect()` on an older version of Vim
+will supplement the `bundle/{}` default with `pack/{}/start/{}`, effectively
+backporting a subset of the new native functionality.
+
 ## Runtime File Editing
 
 `:Vopen`, `:Vedit`, `:Vsplit`, `:Vvsplit`, `:Vtabedit`, `:Vpedit`, and
