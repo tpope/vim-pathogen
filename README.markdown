@@ -62,6 +62,15 @@ and other comma-delimited path options in ways most people will never
 need to do.  If you're one of those edge cases, look at the source.
 It's well documented.
 
+## Blacklisting plugins
+
+Want to find what plugin is causing a bug ? Do a bisection by using the blacklist.
+You can blacklist plugins by adding them to the `g:pathogen_blacklist` variable.
+Make sure you define it before calling `pathogen#infect()`.
+
+    let g:pathogen_blacklist = ['plugin1', 'plugin2']
+    call pathogen#infect()
+
 ## Runtime File Editing
 
 `:Vopen`, `:Vedit`, `:Vsplit`, `:Vvsplit`, `:Vtabedit`, `:Vpedit`, and
