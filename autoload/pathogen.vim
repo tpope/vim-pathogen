@@ -30,21 +30,15 @@ function! pathogen#infect(...) abort
   if has('packages')
     call filter(paths, 'v:val !~# "^pack/[^/]*/start/[^/]*$"')
   endif
-  let static = '^\%([$~\\/]\|\w:[\\/]\)[^{}*]*[\/]$'
+  let static = '^\%([$~\\/]\|\w:[\\/]\)[^{}*]*$'
   for path in filter(copy(paths), 'v:val =~# static')
     call pathogen#surround(path)
   endfor
   for path in filter(copy(paths), 'v:val !~# static')
-    if path =~# '^\%({\=[$~\\/]\|{\=\w:[\\/]\).*\%([{}*]\|[\\/]$\)'
+    if path =~# '^\%([$~\\/]\|\w:[\\/]\)'
       call pathogen#surround(path)
-    elseif path =~# '^\%([$~\\/]\|\w:[\\/]\)'
-      call s:warn('Change pathogen#infect('.string(path).') to pathogen#infect('.string(path.'/{}').')')
-      call pathogen#surround(path . '/{}')
-    elseif path =~# '[{}*]\|[\\/]$'
-      call pathogen#interpose(path)
     else
-      call s:warn('Change pathogen#infect('.string(path).') to pathogen#infect('.string(path.'/{}').')')
-      call pathogen#interpose(path . '/{}')
+      call pathogen#interpose(path)
     endif
   endfor
   call pathogen#cycle_filetype()
@@ -267,37 +261,6 @@ function! pathogen#runtime_findfile(file,count) abort
   else
     return fnamemodify(file,':p')
   endif
-endfunction
-
-" Section: Deprecated
-
-function! s:warn(msg) abort
-  echohl WarningMsg
-  echomsg a:msg
-  echohl NONE
-endfunction
-
-" Prepend all subdirectories of path to the rtp, and append all 'after'
-" directories in those subdirectories.  Deprecated.
-function! pathogen#runtime_prepend_subdirectories(path) abort
-  call s:warn('Change pathogen#runtime_prepend_subdirectories('.string(a:path).') to pathogen#infect('.string(a:path.'/{}').')')
-  return pathogen#surround(a:path . pathogen#slash() . '{}')
-endfunction
-
-function! pathogen#incubate(...) abort
-  let name = a:0 ? a:1 : 'bundle/{}'
-  call s:warn('Change pathogen#incubate('.(a:0 ? string(a:1) : '').') to pathogen#infect('.string(name).')')
-  return pathogen#interpose(name)
-endfunction
-
-" Deprecated alias for pathogen#interpose().
-function! pathogen#runtime_append_all_bundles(...) abort
-  if a:0
-    call s:warn('Change pathogen#runtime_append_all_bundles('.string(a:1).') to pathogen#infect('.string(a:1.'/{}').')')
-  else
-    call s:warn('Change pathogen#runtime_append_all_bundles() to pathogen#infect()')
-  endif
-  return pathogen#interpose(a:0 ? a:1 . '/{}' : 'bundle/{}')
 endfunction
 
 " vim:set et sw=2 foldmethod=expr foldexpr=getline(v\:lnum)=~'^\"\ Section\:'?'>1'\:getline(v\:lnum)=~#'^fu'?'a1'\:getline(v\:lnum)=~#'^endf'?'s1'\:'=':
