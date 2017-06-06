@@ -50,6 +50,11 @@ You can also pass an absolute path instead.  I keep the plugins I maintain under
 
     execute pathogen#infect('bundle/{}', '~/src/vim/bundle/{}')
 
+Some plugins have repositories structured where the vim plugin is under
+`/vim`. To support these, you can use:
+
+    execute pathogen#infect('bundle/{}', 'bundle/{}/vim')
+
 Normally to generate documentation, Vim expects you to run `:helptags`
 on each directory with documentation (e.g., `:helptags ~/.vim/doc`).
 Provided with pathogen.vim is a `:Helptags` command that does this on
