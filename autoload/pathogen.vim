@@ -104,9 +104,7 @@ function! pathogen#is_disabled(path) abort
     return 1
   endif
   let sep = pathogen#slash()
-  let blacklist =
-        \ get(g:, 'pathogen_blacklist', get(g:, 'pathogen_disabled', [])) +
-        \ pathogen#split($VIMBLACKLIST)
+  let blacklist = get(g:, 'pathogen_blacklist', get(g:, 'pathogen_disabled', [])) + pathogen#split($VIMBLACKLIST)
   if !empty(blacklist)
     call map(blacklist, 'substitute(v:val, "[\\/]$", "", "")')
   endif
