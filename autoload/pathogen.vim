@@ -221,22 +221,10 @@ function! pathogen#glob_directories(pattern) abort
   return filter(pathogen#glob(a:pattern),'isdirectory(v:val)')
 endfunction
 
-" Remove duplicates from a list.
+" Remove duplicates from a list in-place keeping the first copy.
 function! pathogen#uniq(list) abort
-  let i = 0
-  let seen = {}
-  while i < len(a:list)
-    if (a:list[i] ==# '' && exists('empty')) || has_key(seen,a:list[i])
-      call remove(a:list,i)
-    elseif a:list[i] ==# ''
-      let i += 1
-      let empty = 1
-    else
-      let seen[a:list[i]] = 1
-      let i += 1
-    endif
-  endwhile
-  return a:list
+  let copyList = copy(a:list)		" Can't use filter argument in the filter condition.
+  return filter(a:list, 'index(copyList, v:val) >= v:key')
 endfunction
 
 " Backport of fnameescape().
