@@ -1,14 +1,18 @@
-If your [commit message sucks](http://stopwritingramblingcommitmessages.com/),
-I'm not going to accept your pull request.  I've explained very politely
-dozens of times that
-[my general guidelines](http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html)
-are absolute rules on my own repositories, so I may lack the energy to
-explain it to you yet another time.  And please, if I ask you to change
-something, `git commit --amend`.
+Follow the commit message guidelines at [commit.style](https://commit.style).
+This is an absolute requirement for my repositories, and furthermore this
+proves you didn't actually read the contribution guidelines, which doesn't
+make for a great first impression.
 
-Beyond that, don't be shy about asking before patching.  What takes you
-hours might take me minutes simply because I have both domain knowledge
-and a perverse knowledge of Vim script so vast that many would consider
-it a symptom of mental illness.  On the flip side, some ideas I'll
-reject no matter how good the implementation is.  "Send a patch" is an
-edge case answer in my book.
+Good commit messages imply good commits.  Pull requests should typically be a
+single commit, or for the rare complicated case, a series of atomic commits.
+If I request a change, use `git commit --amend` or `git rebase --interactive`
+and force push to your branch.
+
+For feature requests, don't be shy about proposing it in an issue before
+drafting a patch.  If it's a great idea, I might do it for you.  If it's a
+terrible idea, no patch will change my mind.
+
+The worst ideas are configuration options.  You'll need to provide a great
+justification in order to persuade me to take on the maintenance and support
+burden it will inevitably entail.  See if you can get away with a custom map
+or autocommand instead.
