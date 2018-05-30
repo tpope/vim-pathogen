@@ -33,6 +33,10 @@ Observe:
 
     cd ~/.vim/bundle && \
     git clone https://github.com/tpope/vim-sensible.git
+    
+    # IMPORTANT: For users setting up a .dotfiles repository you must
+    # add the plugins as git submodules instead of cloning. Like,
+    git submodule add https://github.com/tpope/vim-sensible.git
 
 Now [sensible.vim](https://github.com/tpope/vim-sensible) is installed.
 If you really want to get crazy, you could set it up as a submodule in
