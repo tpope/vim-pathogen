@@ -4,6 +4,9 @@ Manage your `'runtimepath'` with ease.  In practical terms, pathogen.vim
 makes it super easy to install plugins and runtime files in their own
 private directories.
 
+**This plugin is softly deprecated in favor of Vim's built-in package
+management.**  `:help packages`
+
 ## Installation
 
 Install to `~/.vim/autoload/pathogen.vim`.
