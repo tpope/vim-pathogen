@@ -10,10 +10,10 @@
 "
 " The API is documented inline below.
 
-if exists("g:loaded_pathogen") || &cp
+if exists("g:autoloaded_pathogen") || &cp
   finish
 endif
-let g:loaded_pathogen = 1
+let g:autoloaded_pathogen = 1
 
 " Point of entry for basic default usage.  Give a relative path to invoke
 " pathogen#interpose() or an absolute path to invoke pathogen#surround().
@@ -158,8 +158,6 @@ function! pathogen#helptags() abort
     endfor
   endfor
 endfunction
-
-command! -bar Helptags :call pathogen#helptags()
 
 " Execute the given command.  This is basically a backdoor for --remote-expr.
 function! pathogen#execute(...) abort
