@@ -118,7 +118,7 @@ function! pathogen#surround(path) abort
   let rtp = pathogen#split(&rtp)
   let path = fnamemodify(a:path, ':s?[\\/]\=$??')
   let before = filter(pathogen#expand(path), '!pathogen#is_disabled(v:val)')
-  let after = filter(reverse(pathogen#expand(path, sep.'after')), '!pathogen#is_disabled(v:val[0:-7])')
+  let after = filter(reverse(pathogen#expand(path, sep.'after')), '!pathogen#is_disabled(v:val[0 : -7])')
   call filter(rtp, 'index(before + after, v:val) == -1')
   let &rtp = pathogen#join(before, rtp, after)
   return &rtp
@@ -136,7 +136,7 @@ function! pathogen#interpose(name) abort
   let list = []
   for dir in pathogen#split(&rtp)
     if dir =~# '\<after$'
-      let list += reverse(filter(pathogen#expand(dir[0:-6].name, sep.'after'), '!pathogen#is_disabled(v:val[0:-7])')) + [dir]
+      let list += reverse(filter(pathogen#expand(dir[0 : -6].name, sep.'after'), '!pathogen#is_disabled(v:val[0 : -7])')) + [dir]
     else
       let list += [dir] + filter(pathogen#expand(dir.sep.name), '!pathogen#is_disabled(v:val)')
     endif
