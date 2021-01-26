@@ -15,6 +15,8 @@ Or copy and paste the following into your terminal/shell:
     mkdir -p ~/.vim/autoload ~/.vim/bundle && \
     curl -LSso ~/.vim/autoload/pathogen.vim https://tpo.pe/pathogen.vim
 
+For Neovim installation instructions and paths are the same.
+
 If you're using Windows, change all occurrences of `~/.vim` to `~\vimfiles`.
 
 ## Runtime Path Manipulation
