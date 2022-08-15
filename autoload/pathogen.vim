@@ -21,7 +21,7 @@ let g:loaded_pathogen = 1
 " subdirectories inside "bundle" inside all directories in the runtime path.
 " If no arguments are given, defaults "bundle/{}", and also "pack/{}/start/{}"
 " on versions of Vim without native package support.
-function! pathogen#infect(...) abort
+function! pathogen#infect(...) abort  " {{{1
   if a:0
     let paths = filter(reverse(copy(a:000)), 'type(v:val) == type("")')
   else
@@ -46,18 +46,18 @@ function! pathogen#infect(...) abort
     return 'finish'
   endif
   return ''
-endfunction
+endfunction " }}}1
 
 " Split a path into a list.
-function! pathogen#split(path) abort
+function! pathogen#split(path) abort " {{{1
   if type(a:path) == type([]) | return a:path | endif
   if empty(a:path) | return [] | endif
   let split = split(a:path,'\\\@<!\%(\\\\\)*\zs,')
   return map(split,'substitute(v:val,''\\\([\\,]\)'',''\1'',"g")')
-endfunction
+endfunction " }}}1
 
 " Convert a list to a path.
-function! pathogen#join(...) abort
+function! pathogen#join(...) abort " {{{1
   if type(a:1) == type(1) && a:1
     let i = 1
     let space = ' '
@@ -81,25 +81,25 @@ function! pathogen#join(...) abort
     let i += 1
   endwhile
   return substitute(path,'^,','','')
-endfunction
+endfunction " }}}1
 
 " Convert a list to a path with escaped spaces for 'path', 'tag', etc.
-function! pathogen#legacyjoin(...) abort
+function! pathogen#legacyjoin(...) abort " {{{1
   return call('pathogen#join',[1] + a:000)
-endfunction
+endfunction " }}}1
 
 " Turn filetype detection off and back on again if it was already enabled.
-function! pathogen#cycle_filetype() abort
+function! pathogen#cycle_filetype() abort " {{{1
   if exists('g:did_load_filetypes')
     filetype off
     filetype on
   endif
-endfunction
+endfunction " }}}1
 
 " Check if a bundle is disabled.  A bundle is considered disabled if its
 " basename or full name is included in the list g:pathogen_blacklist or the
 " comma delimited environment variable $VIMBLACKLIST.
-function! pathogen#is_disabled(path) abort
+function! pathogen#is_disabled(path) abort " {{{1
   if a:path =~# '\~$'
     return 1
   endif
@@ -109,11 +109,11 @@ function! pathogen#is_disabled(path) abort
     call map(blacklist, 'substitute(v:val, "[\\/]$", "", "")')
   endif
   return index(blacklist, fnamemodify(a:path, ':t')) != -1 || index(blacklist, a:path) != -1
-endfunction
+endfunction " }}}1
 
 " Prepend the given directory to the runtime path and append its corresponding
 " after directory.  Curly braces are expanded with pathogen#expand().
-function! pathogen#surround(path) abort
+function! pathogen#surround(path) abort " {{{1
   let sep = pathogen#slash()
   let rtp = pathogen#split(&rtp)
   let path = fnamemodify(a:path, ':s?[\\/]\=$??')
@@ -122,11 +122,11 @@ function! pathogen#surround(path) abort
   call filter(rtp, 'index(before + after, v:val) == -1')
   let &rtp = pathogen#join(before, rtp, after)
   return &rtp
-endfunction
+endfunction " }}}1
 
 " For each directory in the runtime path, add a second entry with the given
 " argument appended.  Curly braces are expanded with pathogen#expand().
-function! pathogen#interpose(name) abort
+function! pathogen#interpose(name) abort " {{{1
   let sep = pathogen#slash()
   let name = a:name
   if has_key(s:done_bundles, name)
@@ -146,9 +146,10 @@ function! pathogen#interpose(name) abort
 endfunction
 
 let s:done_bundles = {}
+" }}}1
 
 " Invoke :helptags on all non-$VIM doc directories in runtimepath.
-function! pathogen#helptags() abort
+function! pathogen#helptags() abort " {{{1
   let sep = pathogen#slash()
   for glob in pathogen#split(&rtp)
     for dir in map(split(glob(glob), "\n"), 'v:val.sep."/doc/".sep')
@@ -157,29 +158,29 @@ function! pathogen#helptags() abort
       endif
     endfor
   endfor
-endfunction
+endfunction " }}}1
 
 command! -bar Helptags :call pathogen#helptags()
 
 " Execute the given command.  This is basically a backdoor for --remote-expr.
-function! pathogen#execute(...) abort
+function! pathogen#execute(...) abort " {{{1
   for command in a:000
     execute command
   endfor
   return ''
-endfunction
+endfunction " }}}1
 
 " Section: Unofficial
 
-function! pathogen#is_absolute(path) abort
+function! pathogen#is_absolute(path) abort " {{{1
   return a:path =~# (has('win32') ? '^\%([\\/]\|\w:\)[\\/]\|^[~$]' : '^[/~$]')
-endfunction
+endfunction " }}}1
 
 " Given a string, returns all possible permutations of comma delimited braced
 " alternatives of that string.  pathogen#expand('/{a,b}/{c,d}') yields
 " ['/a/c', '/a/d', '/b/c', '/b/d'].  Empty braces are treated as a wildcard
 " and globbed.  Actual globs are preserved.
-function! pathogen#expand(pattern, ...) abort
+function! pathogen#expand(pattern, ...) abort " {{{1
   let after = a:0 ? a:1 : ''
   let pattern = substitute(a:pattern, '^[~$][^\/]*', '\=expand(submatch(0))', '')
   if pattern =~# '{[^{}]\+}'
@@ -199,30 +200,30 @@ function! pathogen#expand(pattern, ...) abort
   let vf = pathogen#slash() . 'vimfiles'
   call map(results, 'v:val =~# "\\*" ? v:val.after : isdirectory(v:val.vf.after) ? v:val.vf.after : isdirectory(v:val.after) ? v:val.after : ""')
   return filter(results, '!empty(v:val)')
-endfunction
+endfunction " }}}1
 
 " \ on Windows unless shellslash is set, / everywhere else.
-function! pathogen#slash() abort
+function! pathogen#slash() abort " {{{1
   return !exists("+shellslash") || &shellslash ? '/' : '\'
-endfunction
+endfunction " }}}1
 
-function! pathogen#separator() abort
+function! pathogen#separator() abort " {{{1
   return pathogen#slash()
-endfunction
+endfunction " }}}1
 
 " Convenience wrapper around glob() which returns a list.
-function! pathogen#glob(pattern) abort
+function! pathogen#glob(pattern) abort " {{{1
   let files = split(glob(a:pattern),"\n")
   return map(files,'substitute(v:val,"[".pathogen#slash()."/]$","","")')
-endfunction
+endfunction " }}}1
 
 " Like pathogen#glob(), only limit the results to directories.
-function! pathogen#glob_directories(pattern) abort
+function! pathogen#glob_directories(pattern) abort " {{{1
   return filter(pathogen#glob(a:pattern),'isdirectory(v:val)')
-endfunction
+endfunction " }}}1
 
 " Remove duplicates from a list.
-function! pathogen#uniq(list) abort
+function! pathogen#uniq(list) abort " {{{1
   let i = 0
   let seen = {}
   while i < len(a:list)
@@ -237,10 +238,10 @@ function! pathogen#uniq(list) abort
     endif
   endwhile
   return a:list
-endfunction
+endfunction " }}}1
 
 " Backport of fnameescape().
-function! pathogen#fnameescape(string) abort
+function! pathogen#fnameescape(string) abort " {{{1
   if exists('*fnameescape')
     return fnameescape(a:string)
   elseif a:string ==# '-'
@@ -248,10 +249,10 @@ function! pathogen#fnameescape(string) abort
   else
     return substitute(escape(a:string," \t\n*?[{`$\\%#'\"|!<"),'^[+>]','\\&','')
   endif
-endfunction
+endfunction " }}}1
 
 " Like findfile(), but hardcoded to use the runtimepath.
-function! pathogen#runtime_findfile(file,count) abort
+function! pathogen#runtime_findfile(file,count) abort " {{{1
   let rtp = pathogen#join(1,pathogen#split(&rtp))
   let file = findfile(a:file,rtp,a:count)
   if file ==# ''
@@ -259,6 +260,6 @@ function! pathogen#runtime_findfile(file,count) abort
   else
     return fnamemodify(file,':p')
   endif
-endfunction
+endfunction " }}}1
 
-" vim:set et sw=2
+" vim:set et sw=2 foldmethod=marker
