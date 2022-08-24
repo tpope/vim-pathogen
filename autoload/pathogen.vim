@@ -261,4 +261,4 @@ function! pathogen#runtime_findfile(file,count) abort
   endif
 endfunction
 
-" vim:set et sw=2 foldmethod=expr foldexpr=getline(v\:lnum)=~'^\"\ Section\:'?'>1'\:getline(v\:lnum)=~#'^fu'?'a1'\:getline(v\:lnum)=~#'^endf'?'s1'\:'=':
+" vim:set et sw=2:
